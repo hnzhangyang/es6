@@ -88,6 +88,7 @@ console.log(_baz);
 // 3
 ```
 当解构深嵌套的对象属性，有可能出错
+
 ES6
 ``` javaScript
 var foo = { bar: { bar: 'pony', baz: 3 }};
