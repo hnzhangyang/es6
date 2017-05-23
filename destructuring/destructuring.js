@@ -1,6 +1,9 @@
-var foo = { bar : 'pony', baz: 3};
-var {bar: bar, _baz : _baz} = foo;
-console.log(bar);
-// 'pony'
-console.log(_baz);
-// undefined
+var a = 1,
+    b = 2,
+    aux;
+aux = a;
+a = b;
+b = aux;
+
+console.log(a);
+console.log(b);
