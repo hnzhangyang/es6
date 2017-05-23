@@ -8,7 +8,8 @@ console.log(baz);
 
 // demo 2
 var foo = { bar : 'pony', baz: 3 };
-var { bar, baz } = foo;
+var bar = foo.bar;
+var baz = foo.baz;
 console.log(bar);
 // 'pony'
 console.log(baz);
@@ -16,13 +17,38 @@ console.log(baz);
 
 // demo 3
 var foo = { bar : 'pony', baz: 3 };
+var {bar: bar, _baz : _baz } = foo;
+console.log(bar);
+// 'pony'
+console.log(_baz);
+// undefined
+
+// demo 4
+var foo = { bar : 'pony', baz: 3};
+var bar = foo.bar;
+var _baz = foo._baz;
+console.log(bar);
+// 'pony'
+console.log(_baz);
+// undefined
+
+// demo 5
+var foo = { bar : 'pony', baz: 3 };
+var { bar, baz } = foo;
+console.log(bar);
+// 'pony'
+console.log(baz);
+// 3
+
+// demo 6
+var foo = { bar : 'pony', baz: 3 };
 var { bar: _bar, baz: _baz } = foo;
 console.log(_bar);
 // 'pony'
 console.log(_baz);
 // 3
 
-//demo 4
+//demo 7
 var foo = { bar: { bar: 'pony', baz: 3 }};
 var { bar: {bar, baz: _baz } } = foo;
 console.log(bar);
@@ -30,32 +56,32 @@ console.log(bar);
 console.log(_baz);
 // 3
 
-// demo 5
+// demo 8
 var foo = { bar: { bar: 'pony', baz: 3 }};
 var { barErr: { bar } } = foo;
 // error
 
-// demo 6
+// demo 9
 var foo = { bar: { bar: 'pony', baz: 3 }};
 var bar = foo.barErr.bar;
 // Uncaught TypeError: Cannot read property 'bar' of undefined
 
-// demo 7
+// demo 10
 var [a] = [10]
 console.log(a);
 // 10
 
-// demo 8
+// demo 11
 var [,,a] = [1,2,3];
 console.log(a);
 // 3
 
-// demo 9
+// demo 12
 var [,,,a] = [1,2,3];
 console.log(a);
 // undefined 
 
-// demo 10
+// demo 13
 var { foo = 3 } = { foo : 2 };
 console.log(foo);
 // 2
@@ -69,7 +95,7 @@ var [ b = 10 ] = [ undefined ];
 console.log(b)
 // 10
 
-// demo 11
+// demo 14
 var a = 1 , b = 2;
 [a, b] = [b, a];
 console.log(a);
@@ -77,7 +103,7 @@ console.log(a);
 console.log(b);
 // 1
 
-// demo 12
+// demo 15
 var a = 1,
     b = 2,
     aux;
@@ -89,7 +115,7 @@ console.log(a);
 console.log(b);
 // 1
 
-// demo 13
+// demo 16
 function greet ({ age, name:greeting='she' }) {
   console.log(`${greeting} is ${age} years old.`)
 }
