@@ -7,7 +7,6 @@
 
 在 ES6 之前，我们使用 arguments 变量来引用函数传入的参数。
 
-ES5
 ``` javaScript
 function concat () {
   return Array.prototype.slice.call(arguments).join(' ')
@@ -32,7 +31,6 @@ fn()
 
 有时候为了在 arguments 对象上使用这些数组方法，我们不得不借助 apply 方法（或者 call 方法）。使用 ... 操作符就简单很多。
 
-ES6
 ``` javaScript
 function concat (...words) {
   return words.join(' ')
