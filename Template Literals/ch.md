@@ -93,6 +93,7 @@ var text = upperExpr`hello ${name}, you look lovely today in that ${outfit}`
 console.log(text)
 ```
 对于上面的代码初看起来可能会有点困惑，让我们一步一步把它分解
+
 首先我们定义了一个工具函数 upperExpr
 ```javaScript
 // 这里用了 ES6 的 rest parameters syntax 语法，将函数除 template 之外的所有参数收集进一个 expressions 数组
@@ -114,7 +115,7 @@ function upperExpr (template, ...expressions) {
 var name = 'nico'
 var outfit = 'leather jacket'
 ```
-4、声明了字面量模板，有所不同的是在字面量模板语法标签 `` 前我们添加了之前声明了的工具函数  upperExpr
+声明了字面量模板，有所不同的是在字面量模板语法标签 `` 前我们添加了之前声明了的工具函数  upperExpr
 ```javaScript
 var text = upperExpr`hello ${name}, you look lovely today in that ${outfit}`
 ```
