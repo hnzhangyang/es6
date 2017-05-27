@@ -151,11 +151,9 @@ console.log(baz)
 var sayHi = function(){
     console.log('hi')
 }
-
 var foo = {
     sayHi
 }
-
 foo.sayHi()
 // hi
 ```
