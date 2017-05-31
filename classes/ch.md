@@ -102,3 +102,10 @@ var instance = new Animal()
 - 5、返回该新对象
 
 知道为什么构造函数是 “函数” 了吧，因为只有函数具有 new 语法，而且自带可继承的 prototype 对象。
+
+因为在 new 的时候，改变了对象的 \_\_proto\_\_ 指向，其实也就是改变了对象可通过原型链查找的方法，这样就做到了复用，一个构造函数可以有多个实例。
+``` javaScript
+var instance1 = new Animal()
+var instance2 = new Animal()
+var instance3 = new Animal()
+```
