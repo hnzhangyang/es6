@@ -17,7 +17,8 @@ foo.toString === Object.prototype.toString
 ```
 实际上，当我们调用 foo.toString 的时候，内部机制检测到了 foo 是一个空对象，并没有 toString 方法，于是沿着 \_\_proto\_\_ 查找到了 Object.prototype 对象，调用了其中的 toString 方法。
 
-- **原型链的本质就是对象沿着 \_\_proto\_\_ 逐级向上查找的过程**
+**原型链的本质就是对象沿着 \_\_proto\_\_ 逐级向上查找的过程** 
+-
  
 每个对象都拥有 \_\_proto\_\_ 属性 ，指向该对象 **构造函数** 的原型。
 ## 继承
