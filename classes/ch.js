@@ -1,5 +1,8 @@
-function Bar(){
-    // some code    
+var foo = {}
+var bar = {
+    paint(){
+        console.log('hi')
+    }
 }
-var instance = new Bar()
-console.log(instance.constructor === Bar)
+Object.prototype.__proto__ = bar
+foo.paint()

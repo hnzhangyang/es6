@@ -35,7 +35,7 @@ foo.constructor === Object
 ```
 此时 foo 的原型链 \_\_proto\_\_ 只有两级。
 - 1、foo 对象本身
-- 2、Object.prototype
+- 2、Object.prototype 对象
 
  如果在Object.prototype 也没有的属性，那么 foo 中也调用不到了。
 ``` javaScript
@@ -65,11 +65,43 @@ console.log(instance.toString())
 
 此时 instance 的原型链如下
 - 1、instance 对象本身
-- 2、Animal.prototype
-- 3、Object.prototype
+- 2、Animal.prototype 对象
+- 3、Object.prototype 对象
 
-可见不管哪个对象的原型链，最终都指向兜底儿对象
-Object.prototype
+其实改变原型链并不一定需要 **构造函数**，我们可以手动指定原型链。
+``` javaScript
+var foo = {}
+var bar = {
+    paint(){
+        console.log('hi')
+    }
+}
+foo.__proto__ = bar
+foo.paint()
+// hi
+```
+此时的 foo 对象，原型链也是三级，实际上可以无限级，不停的改变 \_\_proto\_\_ 指向就可以了，这里不演示了。
+- 1、foo 对象本身
+- 2、bar 对象
+- 3、Object.prototype 对象
+
+可见不管什么情况下对象的原型链，最终都指向兜底儿对象
+Object.prototype。而 Object.prototype.\_\_proto\_\_ 为 null
+``` javaScript
+console.log(Object.prototype.__proto__);
+// null
+```
+你可能想问 Object.prototype.\_\_proto\_\_ 能不能改变指向，实际上是不可以的，有一个循环调用的问题（自己思考）。
+``` javaScript
+var foo = {}
+var bar = {
+    paint(){
+        console.log('hi')
+    }
+}
+Object.prototype.__proto__ = bar
+// Cyclic __proto__ value
+```
 
 ## 构造函数
 我们通过原型链来实现继承，而继承的手段就是 **构造函数**。
