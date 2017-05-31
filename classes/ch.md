@@ -3,6 +3,7 @@
 - [原型链](#原型链)
 - [继承](#继承)
 - [构造函数](#构造函数)
+- [class](#class)
 ## 原型链
 想象我们声明了一个**不具有任何属性与方法**空对象。
 ``` javaScript
@@ -104,7 +105,7 @@ Object.prototype.__proto__ = bar
 ```
 
 ## 构造函数
-我们通过原型链来实现继承，而继承的手段就是 **构造函数**。
+一般情况下，我们通过原型链来实现继承，手段是 **构造函数**。
 ``` javaScript
 function Animal(){
     this.num = 0
@@ -164,5 +165,56 @@ function Bar(){
 }
 var instance = new Bar()
 console.log(instance.constructor === Bar)
+// true
+```
+## class
+复习了 javaScript 中的原型链和继承之后，现在可以学习下 ES6 关于继承的语法糖 class 了。
+
+在以前，我们一般通过 **构造函数** 实现继承。
+``` javaScript
+function Animal(){
+    this.num = 0
+}
+Animal.prototype.count = function(){
+    console.log(this.num)
+}
+
+var instance = new Animal()
+instance.count();
+// 0
+```
+这种基于原型的写法可能让初学者感到不适，于是 ES6 中有了以下语法糖。
+```
+class Animal {
+    constructor (){
+        this.num = 0
+    }
+
+    count (){
+        console.log(this.num)
+    }
+}
+
+var instance = new Animal()
+instance.count();
+// 0
+```
+这样的写法简单明确，隐藏了基于原型的继承时的晦涩的语法。
+
+实际上 class 简单来说就可以理解是声明一个构造函数，它返回的对象具有构造函数的很多特性。
+``` javaScript
+class Animal {
+    constructor (){
+        this.num = 0
+    }
+
+    count (){
+        console.log(this.num)
+    }
+}
+
+console.log(typeof Animal.prototype.count)
+// function
+console.log(Animal.prototype.constructor === Animal)
 // true
 ```

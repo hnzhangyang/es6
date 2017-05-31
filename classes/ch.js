@@ -1,8 +1,14 @@
-var foo = {}
-var bar = {
-    paint(){
-        console.log('hi')
+class Animal {
+    constructor (){
+        this.num = 0
+    }
+
+    count (){
+        console.log(this.num)
     }
 }
-Object.prototype.__proto__ = bar
-foo.paint()
+
+console.log(typeof Animal.prototype.count)
+// Function
+console.log(Animal.prototype.constructor === Animal)
+// true
