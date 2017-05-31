@@ -45,6 +45,46 @@ instance.count();
 
 上面我们说到 **原型链的本质就是对象沿着 \_\_proto\_\_ 逐级向上查找的过程** ，而继承就是 **改变对象 \_\_proto\_\_ 指向的过程**。
 
+回到第一个例子， foo 对象的构造函数是 Object 。
+``` javaScript
+var foo = {}
+foo.constructor === Object
+// true
+```
+此时 foo 的原型链 \_\_proto\_\_ 只有两级。
+- 1、foo 对象本身
+- 2、Object.prototype
 
+ 如果在Object.prototype 也没有的属性，那么 foo 中也调用不到了。
+``` javaScript
+typeof Object.prototype.a
+// "undefined"
+typeof foo.a
+// "undefined"
+```
+当我们使用自定义的 **构造函数** 时，原型链有三级
+``` javaScript
+function Animal(){
+    this.num = 0
+}
+Animal.prototype.count = function(){
+    console.log(this.num)
+}
 
+var instance = new Animal()
+instance.count()
+// 0
+console.log(instance.toString())
+// [object Object]
+```
+当我们调用 instance.count 方法时，instance本身并没有 count 方法，于是原型链沿着  instance.\_\_proto\_\_ 找到了 Animal.prototype ，在其中找到了 count 方法。
 
+当我们调用 instance.toString 方法时，同样的 instance 本身并不具有 toString 方法，并且 Animal.prototype 也不具有 toString 方法。但是有意思的是在 javaScript 中，一切皆对象。Animal.prototype 也不例外，在 Animal.prototype 找不到的方法，会沿着 Animal.prototype.\_\_proto\_\_ 再次向上查找，找到了 Object.prototype ,并在其中找到了 toString。
+
+此时 instance 的原型链如下
+- 1、instance 对象本身
+- 2、Animal.prototype
+- 3、Object.prototype
+
+可见不管哪个对象的原型链，最终都指向兜底儿对象
+Object.prototype
