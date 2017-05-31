@@ -21,28 +21,6 @@ foo.toString === Object.prototype.toString
 
 每个对象都拥有 \_\_proto\_\_ 属性 ，指向该对象 **构造函数** 的原型。
 ## 继承
-我们通过原型链来实现继承。
-``` javaScript
-function Animal(){
-    this.num = 0
-}
-Animal.prototype.count = function(){
-    console.log(this.num)
-}
-
-var instance = new Animal()
-instance.count();
-// 0
-```
-
-我们把 Animal 叫做 **构造函数** 。 Animal 是我们自己定义的 **构造函数** 。实际上 ECMA 也为我们定义了一些常用全局的构造函数。
-- String
-- Number
-- Object
-- Function
-- Array
-- ...
-
 上面我们说到 **原型链的本质就是对象沿着 \_\_proto\_\_ 逐级向上查找的过程** ，而继承就是 **改变对象 \_\_proto\_\_ 指向的过程**。
 
 回到第一个例子， foo 对象的构造函数是 Object 。
@@ -88,3 +66,39 @@ console.log(instance.toString())
 
 可见不管哪个对象的原型链，最终都指向兜底儿对象
 Object.prototype
+
+## 构造函数
+我们通过原型链来实现继承，而继承的手段就是 **构造函数**。
+``` javaScript
+function Animal(){
+    this.num = 0
+}
+Animal.prototype.count = function(){
+    console.log(this.num)
+}
+
+var instance = new Animal()
+instance.count();
+// 0
+```
+
+我们把 Animal 叫做 **构造函数** 。 Animal 是我们自己定义的 **构造函数** 。实际上 ECMA 也为我们定义了一些常用全局的构造函数。
+- String
+- Number
+- Object
+- Function
+- Array
+- ...
+
+构造函数的用法很简单。
+``` javaScript
+var instance = new Animal()
+```
+当我们调用诸如 new Animal() 语法时，程序内部进行了一下五步操作。
+- 1、新建一个空对象 
+- 2、Animal 函数的 this 值指向该新对象
+- 3、执行 Animal 函数
+- 4、新对象 \_\_proto\_\_  指向 Animal.prototype
+- 5、返回该新对象
+
+知道为什么构造函数是 “函数” 了吧，因为只有函数具有 new 语法，而且自带可继承的 prototype 对象。
