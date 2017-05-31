@@ -4,6 +4,7 @@
 - [继承](#继承)
 - [构造函数](#构造函数)
 - [class](#class)
+- [extens](#extens)
 ## 原型链
 想象我们声明了一个**不具有任何属性与方法**空对象。
 ``` javaScript
@@ -199,9 +200,12 @@ var instance = new Animal()
 instance.count();
 // 0
 ```
+- 1、class 后面跟 类名，每个类都必须拥有一个 constructor 方法，如果没有指定，会自动分配一个空函数给 constructor。
+- 2、类的内部每个方法不需要用逗号分离，反而使用了的话会报错
+
 这样的写法简单明确，隐藏了基于原型的继承时的晦涩的语法。
 
-实际上 class 简单来说就可以理解是声明一个构造函数，它返回的对象具有构造函数的很多特性。
+实际上 class 简单来说就可以理解是声明一个构造函数，它具有构造函数返的很多特性。
 ``` javaScript
 class Animal {
     constructor (){
@@ -218,3 +222,4 @@ console.log(typeof Animal.prototype.count)
 console.log(Animal.prototype.constructor === Animal)
 // true
 ```
+## extens
