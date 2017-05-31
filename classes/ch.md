@@ -1,23 +1,21 @@
 # classes
 ## 原型链
-想象我们声明了一个空对象。
+想象我们声明了一个**不具有任何属性与方法**空对象。
 ``` javaScript
 var foo = {}
 
 ```
-foo 是一个**不具有任何属性与方法**的空对象。
-
-却可以调用 toString 方法。
+但是为什么可以调用 toString 方法。
 ``` javaScript
 console.log(foo.toString())
 // "[object Object]"
 ```
-实际上 toString 定义在 foo 的 **构造函数** Object 的原型 prototype 上。
+的确 foo 对象本身并不具有 toString 方法， toString 方法定义在 foo 的 **构造函数** Object 的原型 prototype 上。
 ``` javaScript
 foo.toString === Object.prototype.toString
 // true
 ```
-当我们调用 foo.toString 的时候，内部机制检测到了 foo 是一个空对象，并没有 toString 方法，于是沿着 \_\_proto\_\_ 查找到了 Object.prototype 对象，调用了其中的 toString 方法
+实际上，当我们调用 foo.toString 的时候，内部机制检测到了 foo 是一个空对象，并没有 toString 方法，于是沿着 \_\_proto\_\_ 查找到了 Object.prototype 对象，调用了其中的 toString 方法。
 
 **原型链的本质就是对象沿着 \_\_proto\_\_ 逐级向上查找的过程**
  
