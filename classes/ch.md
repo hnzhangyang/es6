@@ -1,4 +1,8 @@
 # classes
+## 目录
+- [原型链](#原型链)
+- [继承](#继承)
+- [构造函数](#构造函数)
 ## 原型链
 想象我们声明了一个**不具有任何属性与方法**空对象。
 ``` javaScript
@@ -108,4 +112,25 @@ var instance = new Animal()
 var instance1 = new Animal()
 var instance2 = new Animal()
 var instance3 = new Animal()
+```
+构造函数其实也是普通函数，也可以不通过 new 而直接调用。一般情况下以首字母大写来表明与普通函数的区别。
+``` javaScript
+Animal()
+```
+上面说到每个函数都具有一个可被继承的 prototype 属性，这个属性自带一个 constructor 指针，指向该函数本身。
+``` javaScript
+function Bar(){
+    // some code    
+}
+console.log(Bar.prototype.constructor === Bar)
+// true
+```
+这个属性自动被该 **构造函数** 的实例继承。
+``` javaScript
+function Bar(){
+    // some code    
+}
+var instance = new Bar()
+console.log(instance.constructor === Bar)
+// true
 ```

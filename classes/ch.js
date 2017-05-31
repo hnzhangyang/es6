@@ -1,12 +1,5 @@
-function Animal(){
-    this.num = 0
+function Bar(){
+    // some code    
 }
-Animal.prototype = {
-    constructor:123,
-    a:1
-}
-
-
-var instance = new Animal()
-
-console.log(instance.toString())
+var instance = new Bar()
+console.log(instance.constructor === Bar)
