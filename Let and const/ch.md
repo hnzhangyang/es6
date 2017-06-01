@@ -95,3 +95,75 @@ bar()
 console.log(window.text)
 // hi
 ```
+## let
+let 与 var 都是声明变量的方法，与 var 不同的是 let 声明的变量具有块级作用域。
+```
+{
+    let foo = 'hi'
+}
+console.log(foo)
+// Uncaught ReferenceError: foo is not defined
+```
+在一些情况下，拥有块级作用域会变得很方便。
+``` javaScript
+for(var i = 0; i < 3; i++) {}
+console.log(i)
+// 3
+
+for(let j = 0; j < 3; j++) {}
+console.log(j)
+// j is not defined
+// 这样在 for 循环的时候就不会污染变量了
+```
+## const
+const 与 let 一样，也具有块级作用域。
+``` javaScript
+{
+    const bar = 'hi'
+}
+
+console.log(bar)
+// Uncaught ReferenceError: bar is not defined
+```
+与 let 不同的是，const 声明的变量不能改变其引用地址。
+```
+const bar = 'hi'
+bar = 'hello'
+// "bar" is read-only
+```
+在 javaScript 中有两种类型的值， **基本类型** 和 **引用类型**。
+**基本类型** 的值包括以下六种。
+- string
+- number
+- boolean
+- undefined
+- null
+- symbol（ES6 新加）
+
+**引用类型** 的值本质上都是 object
+- object
+当你声明一个 **基本类型** 的值时，系统会给该值单独分配一段内存空间，各个 **基本类型** 的值空间不共享,不会相互影响。
+``` javaScript
+var foo = 'hi'
+var bar = foo
+
+console.log(foo)
+// hi
+console.log(bar)
+// hi
+
+bar = 'hello'
+console.log(foo)
+// hi
+console.log(bar)
+// hello
+```
+所以用 const 声明一个基本类型的值时，该值指向新开辟的空间，该值不可改变，即常量。
+``` javaScript
+const bar = 'hi'
+bar = 'hello'
+// 因为重新赋值的话相当于改变了 bar 的引用地址
+// 在 const 声明的变量中是不允许的
+// 所以报错
+//  "bar" is read-only
+```
