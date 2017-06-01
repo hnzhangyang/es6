@@ -307,7 +307,7 @@ instance.showFoo()
 instance.showBar()
 // Bar
 ```
-classes 中的 extends 语法简单来说就是在 原型链继承的基础上封装来的，同原型链继承一样， Bar.prototype.\_\_proto\_\_  同样指向 Foo.prototype。
+classes 中的 extends 语法简单来说就是在 原型链继承 的基础上封装来的，同原型链继承一样， Bar.prototype.\_\_proto\_\_  同样指向 Foo.prototype。
 ``` javaScript
 class Foo {
     constructor (){}
