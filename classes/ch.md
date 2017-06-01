@@ -207,7 +207,7 @@ instance.count();
 
 这样的写法简单明确，隐藏了基于原型的继承时的晦涩的语法。
 
-实际上 class 简单来说就可以理解是声明一个构造函数，它具有构造函数返的很多特性。
+实际上 class 简单来说就可以理解是声明一个构造函数，它具有构造函数的很多特性。
 ``` javaScript
 class Animal {
     constructor (){
@@ -371,7 +371,7 @@ instance.showBoth()
     - 执行构造函数
     - 新对象 \_\_proto\_\_  指向 构造函数的 prototype
     - 返回该新对象
-    
+
 然后讲述了 ES6 的 class 其实是 javaScript 中基于原型继承的语法糖
 - 4、通过 class 创建类
 - 5、class 的静态方法 static
