@@ -132,6 +132,7 @@ bar = 'hello'
 // "bar" is read-only
 ```
 在 javaScript 中有两种类型的值， **基本类型** 和 **引用类型**。
+
 **基本类型** 的值包括以下六种。
 - string
 - number
