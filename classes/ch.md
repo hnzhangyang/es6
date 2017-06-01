@@ -276,10 +276,6 @@ instance.showFoo()
 // Foo
 instance.showBar()
 // Bar
-console.log(instance.__proto__ === Bar.prototype)
-// true
-console.log(Bar.prototype.__proto__ === Foo.prototype)
-// true
 ```
 此时 instance 的原型链有四级。
 - 1、instance 对象本身
