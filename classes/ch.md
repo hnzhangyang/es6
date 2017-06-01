@@ -5,7 +5,8 @@
 - [构造函数](#构造函数)
 - [class](#class)
 - [static](#static)
-- [extens](#extens)
+- [extends](#extends)
+- [总结](#总结)
 ## 原型链
 想象我们声明了一个**不具有任何属性与方法**空对象。
 ``` javaScript
@@ -256,3 +257,108 @@ console.log(typeof Animal.count)
 console.log(typeof Animal.reduce)
 // function
 ```
+## extends
+还记的[继承](#继承)一节中说到过，继承就是 **改变对象 \_\_proto\_\_ 指向的过程**。所以在以前的代码中，我们想要让一个 **构造函数** 继承另一个 **构造函数** 的属性和方法，需要这样写。
+``` javaScript
+function Foo (){}
+Foo.prototype.showFoo = function(){
+    console.log('Foo')
+}
+
+function Bar (){}
+Bar.prototype = new Foo()
+Bar.prototype.showBar = function(){
+    console.log('Bar')
+}
+
+var instance = new Bar()
+instance.showFoo()
+// Foo
+instance.showBar()
+// Bar
+console.log(instance.__proto__ === Bar.prototype)
+// true
+console.log(Bar.prototype.__proto__ === Foo.prototype)
+// true
+```
+此时 instance 的原型链有四级。
+- 1、instance 对象本身
+- 2、Bar.prototype 对象
+- 3、Foo.prototype 对象
+- 4、Object.prototype 对象
+
+这样的语法初看起来既不易懂，也不美观，在 classes 中用 extends 关键字来继承就显得好用很多。
+``` javaScript
+class Foo {
+    constructor (){}
+    showFoo (){
+        console.log('Foo')
+    }
+}
+
+class Bar extends Foo {
+    constructor (){
+        super()
+    }
+    showBar (){
+        console.log('Bar')
+    }
+}
+
+var instance = new Bar()
+instance.showFoo()
+// Foo
+instance.showBar()
+// Bar
+```
+classes 中的 extends 语法简单来说就是在 原型链继承的基础上封装来的，同原型链继承一样， Bar.prototype.\_\_proto\_\_  同样指向 Foo.prototype。
+``` javaScript
+class Foo {
+    constructor (){}
+    showFoo (){
+        console.log('Foo')
+    }
+}
+
+class Bar extends Foo {
+    constructor (){
+        super()
+    }
+    showBar (){
+        console.log('Bar')
+    }
+}
+
+console.log(instance.__proto__ === Bar.prototype)
+// true
+console.log(Bar.prototype.__proto__ === Foo.prototype)
+// true
+```
+你可能注意到了在 Bar 的 构造函数中有一个 super() 字样。这个 super() 不可缺少，因为子类是没有
+this 对象的，需要借助父类的 this 对象。在子类的构造函数中调用 super，其实就是调用父类 constructor 方法。
+
+super 对象还可以引用父类的其他公共方法。
+```
+class Foo {
+    constructor (){}
+    showFoo (){
+        console.log('Foo')
+    }
+}
+
+class Bar extends Foo {
+    constructor (){
+        super()
+    }
+    showBoth (){
+        super.showFoo()
+        console.log('Bar')
+    }
+}
+
+var instance = new Bar()
+instance.showBoth()
+// Foo
+// Bar
+```
+## 总结

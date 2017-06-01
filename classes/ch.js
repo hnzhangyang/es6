@@ -1,16 +1,19 @@
-class Animal {
-    constructor (){
-        this.num = 0
-    }
-
-    count (){
-        console.log(this.num)
-    }
-
-    static reduce (){
-        this.num = this.num - 1
+class Foo {
+    constructor (){}
+    showFoo (){
+        console.log('Foo')
     }
 }
-console.log(typeof Animal.reduce)
-// function
-console.log(typeof Animal.count)
+
+class Bar extends Foo {
+    constructor (){
+        super()
+    }
+    showBoth (){
+        super.showFoo()
+        console.log('Bar')
+    }
+}
+
+var instance = new Bar()
+instance.showBoth()
