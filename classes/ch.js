@@ -6,9 +6,11 @@ class Animal {
     count (){
         console.log(this.num)
     }
-}
 
-console.log(typeof Animal.prototype.count)
-// Function
-console.log(Animal.prototype.constructor === Animal)
-// true
+    static reduce (){
+        this.num = this.num - 1
+    }
+}
+console.log(typeof Animal.reduce)
+// function
+console.log(typeof Animal.count)

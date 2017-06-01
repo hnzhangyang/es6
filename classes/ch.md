@@ -4,6 +4,7 @@
 - [继承](#继承)
 - [构造函数](#构造函数)
 - [class](#class)
+- [static](#static)
 - [extens](#extens)
 ## 原型链
 想象我们声明了一个**不具有任何属性与方法**空对象。
@@ -222,4 +223,36 @@ console.log(typeof Animal.prototype.count)
 console.log(Animal.prototype.constructor === Animal)
 // true
 ```
-## extens
+## static
+**构造函数** 除了有可继承的 prototype 方法外，我们还希望它能拥有一些不可继承的静态方法。
+``` javaScript
+function Animal(){
+    this.num = 0
+}
+Animal.reduce = function(){
+    this.num = this.num - 1
+}
+console.log(typeof Animal.reduce)
+// function
+``` 
+在 classes 中，除了直接给 Animal 添加属性，还可以更直观的用到 class 的 static 方法。
+``` javaScript
+class Animal {
+    constructor (){
+        this.num = 0
+    }
+
+    count (){
+        console.log(this.num)
+    }
+
+    static reduce (){
+        this.num = this.num - 1
+    }
+}
+
+console.log(typeof Animal.count)
+// undefined
+console.log(typeof Animal.reduce)
+// function
+```
