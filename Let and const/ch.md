@@ -169,3 +169,34 @@ bar = 'hello'
 // 所以报错
 //  "bar" is read-only
 ```
+当你声明一个 **引用类型** 的值时，可以多个对象保存一个 **引用类型** 的内存引用。这种情况下，各个变量共享一份内存引用，改变引用的值时，会影响所有对象。
+``` javaScript
+var foo = {
+    text: 'hi'
+}
+var bar = foo
+
+console.log(foo.text)
+// hi
+console.log(var.text)
+// hi
+
+bar.text = 'hello'
+console.log(foo.text)
+// hello
+console.log(var.text)
+// hello
+```
+上文提到，const 声明的变量不能再改变其引用地址，因为 **基本类型** 的值每个都会新开辟一段内存，改变该变量的值即改变引用地址。但是 **引用类型** 则不同，用 const 声明的 **引用类型** 虽不能再赋值到另一个 **引用类型** ，但却可以改变该引用类型的值。
+``` javaScript
+const foo = {
+    text: 'hi'
+}
+
+console.log(foo.text)
+// hi
+
+foo.text = 'hello'
+console.log(foo.text)
+// hello
+```
