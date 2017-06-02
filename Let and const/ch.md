@@ -97,7 +97,7 @@ console.log(window.text)
 ```
 ## let
 let 与 var 都是声明变量的方法，与 var 不同的是 let 声明的变量具有块级作用域。
-```
+``` javaScript
 {
     let foo = 'hi'
 }
@@ -126,7 +126,7 @@ console.log(bar)
 // Uncaught ReferenceError: bar is not defined
 ```
 与 let 不同的是，const 声明的变量不能改变其引用地址。
-```
+``` javaScript
 const bar = 'hi'
 bar = 'hello'
 // "bar" is read-only
