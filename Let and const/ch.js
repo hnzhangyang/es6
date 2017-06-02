@@ -1,2 +1,2 @@
-const bar = 'hi'
-bar = 'hello'
+bar = 'hi'
+let bar = 1;

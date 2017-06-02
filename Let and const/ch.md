@@ -200,3 +200,10 @@ foo.text = 'hello'
 console.log(foo.text)
 // hello
 ```
+## 暂时性死区
+let 和 const 声明的变量都会有暂时性死区的问题，死区的意思就是说在一段作用域内，如果采用 let 和 const 声明变量，那在声明语句之前不可使用该变量。
+``` javaScript
+bar = 'hi'
+// error
+let bar
+```
