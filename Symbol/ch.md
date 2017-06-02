@@ -117,3 +117,15 @@ document.body.appendChild(frame)
 console.log(Symbol.for('foo') === frame.contentWindow.Symbol.for('foo'))
 // true
 ```
+## Symbol.keyFor(Symbol)
+Symbol.keyFor(Symbol) 用来返回一个 symbol 的描述。注意只能搜索到 symbol备份仓库 的 symbol。也就是说 Symbol() 创建的 symbol 不能使用这个方法。
+``` javaScript
+var foo = Symbol('foo')
+console.log(Symbol.keyFor(foo))
+// undefined
+
+var bar = Symbol.for('bar')
+console.log(Symbol.keyFor(bar))
+// bar
+```
+## interator

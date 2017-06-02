@@ -1,2 +1,2 @@
-var foo = Symbol('foo')
-console.log(foo == Symbol.for('foo'))
+var foo = Symbol.for('foo')
+console.log(Symbol.keyFor(foo))
