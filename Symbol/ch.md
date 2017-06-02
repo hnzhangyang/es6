@@ -5,7 +5,7 @@
     - [介绍](#介绍)
     - [Symbol.for(key)](#Symbol.for(key))
     - [Symbol.key(symbol)](#Symbol.key(symbol))
-- [interator](#interator)
+- [遍历](#遍历)
 ## 基本类型
 ES6 之前，javaScript 有五种基本类型的值，它们分别是：
 - string
@@ -128,4 +128,33 @@ var bar = Symbol.for('bar')
 console.log(Symbol.keyFor(bar))
 // bar
 ```
-## interator
+## 遍历
+定义在一个对象里面的 symbol 只能被 Object.getOwnPropertySymbols() 方法获取，其他遍历方法均遍历不到对象里面的 symbol 值。
+``` javaScript
+var foo = {
+  [Symbol()]: 'foo',
+  [Symbol('foo')]: 'bar',
+  [Symbol.for('bar')]: 'baz',
+  what: 'ever'
+}
+
+console.log([...foo])
+// []
+
+console.log(Object.keys(foo))
+// ['what']
+
+console.log(JSON.stringify(foo))
+// {"what":"ever"}
+
+for (let key in foo) {
+  console.log(key)
+  // 'what'
+}
+
+console.log(Object.getOwnPropertyNames(foo))
+// ['what']
+
+console.log(Object.getOwnPropertySymbols(foo))
+// [Symbol(), Symbol('foo'), Symbol.for('bar')]
+```
