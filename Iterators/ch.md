@@ -24,8 +24,8 @@ for(var item of bar){
 值得注意的是原生 Object 类型不支持 for...of 遍历。因为原生 Object 对象不支持 **@@iterator** 接口。
 
 所以 ES6 给我们提供了两个协议来使 Object 支持 for...of 遍历。
-- interable 协议用来规范定义对象被迭代时的行为
-- interator 协议用来规范定义每次迭代时返回的值
+- **interable 协议用来规范定义对象被迭代时的行为**
+- **interator 协议用来规范定义每次迭代时返回的值**
 
 
 ``` javaScript
