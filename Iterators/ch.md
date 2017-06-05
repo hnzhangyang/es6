@@ -21,11 +21,13 @@ for(var item of bar){
 - Map
 - Set
 
-值得注意的是原生 Object 类型不支持 for...of 遍历。
+值得注意的是原生 Object 类型不支持 for...of 遍历。因为原生 Object 对象不支持 **@@iterator** 接口。
 
 所以 ES6 给我们提供了两个协议来使 Object 支持 for...of 遍历。
-- interable
-- interator
+- interable 协议用来规范定义对象被迭代时的行为
+- interator 协议用来规范定义每次迭代时返回的值
+
+
 ``` javaScript
 var foo = {
     [Symbol.iterator]: () => ({
@@ -45,10 +47,9 @@ for(var item of foo){
 // h
 // i
 ```
-实际上只要是被循环的对象具有 @@iterator 接口，就能被for...of 循环
-。而给对象定义 [Symbol.iterator] 属性就是在定义其 @@iterator 接口。被定义 @@iterator 接口的对象称为 iterable 化，@@iterator 接口需要遵循 iterator 协议。
+给对象定义 [Symbol.iterator] 属性就是在定义其 **@@iterator** 接口。被定义 **@@iterator** 接口的对象称为 **iterable化**。
 
-iterator 协议定义一个对象被诸如 for...of 迭代时的行为，它需要满足以下条件。
+**iterator协议** 定义一个对象被诸如 for...of 迭代时的行为，它需要满足以下条件。
 - 具有 next 方法
 - next 方法返回一个对象，该对象包含两个属性
     - done Boolean 值，表示是否是最后一个迭代
@@ -68,8 +69,28 @@ var foo = {
     })
 }
 ```
+实际上只要是对象满足 **iterator协议**，不管是自定义还是原生，都可以使对象 **iterable化**。
+
+例如 Generator 函数就返回一个满足 **iterator协议** 的对象。
+``` javaScript
+var foo = {
+    [Symbol.iterator]: function* (){
+        yield 1
+        yield 2
+        yield 3
+    }
+}
+
+for(var item of foo){
+    console.log(item)
+}
+// 1
+// 2
+// 3
+```
+
 ## iterator
-具有 @@iterator 接口的对象能被以下包含 for...of 的方式迭代。
+具有 **@@iterator** 接口的对象能被以下包含 for...of 的方式迭代。
 - for...of
 - 扩展运算符 ...
 - Array.from
@@ -89,7 +110,7 @@ console.log(...foo)
 console.log(Array.from(foo))
 // [1, 2, 3]
 ```
-值得注意的是 iterable 化的对象可能被无限迭代，此时需要注意性能问题。
+值得注意的是 **iterable化** 的对象可能被无限迭代，此时需要注意性能问题。
 ``` javaScript
 var foo = {
     [Symbol.iterator]: () => ({
@@ -131,4 +152,19 @@ for(var item of foo){
 // 1
 // 2
 // 3
+```
+我们也可以把 iterator 对象单独拿出来使用，它是一个具有 next 方法的对象。
+``` javaScript
+var foo = 'hi'
+var iterator = foo[Symbol.iterator]()
+
+
+console.log(iterator.next())
+// Object {value: "h", done: false}
+
+console.log(iterator.next())
+// Object {value: "i", done: false}
+
+console.log(iterator.next())
+// Object {value: undefined, done: true}
 ```
