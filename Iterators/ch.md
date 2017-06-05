@@ -1,7 +1,8 @@
 # Iterators
 ## 目录
 - [对象iterable化](#对象iterable化)
-- [iterator](#iterator)
+- [iterator对象](#iterator对象)
+- [遍历](#iterator)
 ## 对象iterable化
 ES6 新增了遍历语法 for...of 。
 ``` javaScript
@@ -49,7 +50,9 @@ for(var item of foo){
 ```
 给对象定义 [Symbol.iterator] 属性就是在定义其 **@@iterator** 接口。被定义 **@@iterator** 接口的对象称为 **iterable化**。
 
-**iterator协议** 定义一个对象被诸如 for...of 迭代时返回的值，它需要满足以下条件。
+## iterator对象
+
+**@@iterator** 接受一个 iterator 对象，该对象由**iterator协议** 定义，它需要满足以下条件。
 - 具有 next 方法
 - next 方法返回一个对象，该对象包含两个属性
     - done Boolean 值，表示是否是最后一个迭代
@@ -88,8 +91,7 @@ for(var item of foo){
 // 2
 // 3
 ```
-
-## iterator
+## 遍历
 具有 **@@iterator** 接口的对象能被以下包含 for...of 的方式迭代。
 - for...of
 - 扩展运算符 ...
