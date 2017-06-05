@@ -55,8 +55,8 @@ for(var item of foo){
 **@@iterator** 接受一个 iterator 对象，该对象由 **iterator协议** 定义，它需要满足以下条件。
 - 具有 next 方法
 - next 方法返回一个对象，该对象包含两个属性
-    - done Boolean 值，表示是否是最后一个迭代
-    - vaue 表示当前迭代返回的结果
+    - done （Boolean 值，表示是否是最后一个迭代）
+    - vaue （表示当前迭代返回的结果）
 
 例如以下
 ``` javaScript
