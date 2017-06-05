@@ -91,6 +91,53 @@ for(var item of foo){
 // 2
 // 3
 ```
+我们也可以把 iterator 对象单独拿出来使用，它是一个具有 next 方法的对象。
+``` javaScript
+var foo = 'hi'
+var iterator = foo[Symbol.iterator]()
+
+console.log(iterator.next())
+// Object {value: "h", done: false}
+
+console.log(iterator.next())
+// Object {value: "i", done: false}
+
+console.log(iterator.next())
+// Object {value: undefined, done: true}
+```
+对于原生支持 iterable 的对象，其 iterator 方法我们也可以改写。
+``` javaScript
+var foo = new String('hi')
+
+console.log(...foo)
+// h i
+
+foo[Symbol.iterator] = function* () {
+    yield 1
+    yield 2
+    yield 3
+}
+
+console.log(...foo)
+// 1 2 3
+```
+注意上面我们定义字符串的时候使用的 **构造函数**,因为 **构造函数** 会返回对象，而直接赋值的话得到的是一个基本类型字符串，它并不具有属性。
+
+改变 iterable 对象的 iterator 方法并不会影响其取值，只会对使用 iterator 方法遍历的方法有效。
+``` javaScript
+var foo = new String('hi')
+
+foo[Symbol.iterator] = function* () {
+    yield 1
+    yield 2
+    yield 3
+}
+
+console.log(...foo)
+// 1 2 3
+console.log(foo + '')
+// hi
+```
 ## 遍历
 具有 **@@iterator** 接口的对象能被以下包含 for...of 的方式迭代。
 - for...of
@@ -154,19 +201,4 @@ for(var item of foo){
 // 1
 // 2
 // 3
-```
-我们也可以把 iterator 对象单独拿出来使用，它是一个具有 next 方法的对象。
-``` javaScript
-var foo = 'hi'
-var iterator = foo[Symbol.iterator]()
-
-
-console.log(iterator.next())
-// Object {value: "h", done: false}
-
-console.log(iterator.next())
-// Object {value: "i", done: false}
-
-console.log(iterator.next())
-// Object {value: undefined, done: true}
 ```

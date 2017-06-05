@@ -1,10 +1,12 @@
-var foo = 'hi'
+var foo = ['h','i']
 
-var iterator = foo[Symbol.iterator]()
+foo[Symbol.iterator] = function* () {
+    yield 1
+    yield 2
+    yield 3
+}
 
-
-console.log(iterator.next())
-
-console.log(iterator.next())
-
-console.log(iterator.next())
+console.log(...foo)
+// 1 2 3
+console.log(foo)
+// hi
