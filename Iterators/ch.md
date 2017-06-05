@@ -49,7 +49,7 @@ for(var item of foo){
 ```
 给对象定义 [Symbol.iterator] 属性就是在定义其 **@@iterator** 接口。被定义 **@@iterator** 接口的对象称为 **iterable化**。
 
-**iterator协议** 定义一个对象被诸如 for...of 迭代时的行为，它需要满足以下条件。
+**iterator协议** 定义一个对象被诸如 for...of 迭代时返回的值，它需要满足以下条件。
 - 具有 next 方法
 - next 方法返回一个对象，该对象包含两个属性
     - done Boolean 值，表示是否是最后一个迭代
