@@ -385,7 +385,16 @@ Generator 函数
 - Generator 函数同时遵守 **iterable协议** 与 **iterator协议**
 - Generator 函数内部 yield 关键字后面可以带另一个遵守 **iterator协议** 的对象
 
-Generator 对象具有三个方法
+Generator 对象这一节首先介绍了遵守 **iterator协议** 的 iterator 对象可被诸如一下迭代方式迭代。
+- for...of
+- ...
+- Array.from
+
+并且具有 next 方法，每次执行 next 方法，总是返回一个 **iteratorResult**对象。
+``` javaScrpit
+{value: undefined, done: false}
+```
+然后讲到了通过 Generator 函数生成的 Generator 对象与普通的 Generator 对象有所不同，它具有三个方法。
 - next 执行下一段函数体逻辑
 - return 提前终止函数体逻辑
 - throw 抛出可被函数体接收的错误
