@@ -2,6 +2,9 @@
 ## 目录
 - [Generator函数](#Generator函数)
 - [Generator对象](#Generator对象)  
+    - [next](#next)
+    - [return](#return)
+    - [throw](#throw)
 - [总结](#总结)
 ## Generator函数
 function 右边带一个 “*” 表示该函数是 Generator 函数。
@@ -145,6 +148,7 @@ g.next()
 g.next()
 // 4
 ```
+### next
 上面的 **Generator对象**，每执行一次 next 方法，函数体就执行到下一个 yield 关键字，执行完毕后保留状态，暂停执行。值得注意的是最后一个 console.log(4) 也执行了，但是它下面并没有 yield 关键字。这是因为 next 方法并不知道函数内部的状态，它总是期望找到下一个 yield 关键字，如果没有，就一直执行到函数末尾，并标记 done: true。
 ``` javaScript
 function* generator(){
@@ -210,6 +214,7 @@ console.log(g.next())
 console.log(g.next())
 // Object {value: undefined, done: true}
 ``` 
+### return
 **Generator对象** 实际上具有三个方法。
 - next 
 - return
@@ -295,7 +300,7 @@ var g = generator()
 console.log(...g)
 // 1 2 3
 ```
-
+### throw
 throw 方法用于在 Generator 函数中抛出一个错误，这个错误能被 Generator 函数体捕获。
 ``` javaScript
 function* generator(){
@@ -372,12 +377,16 @@ console.log(g.next())
 ```
 ## 总结
 Generator 函数
-- Generator 函数可暂停执行
+- Generator 函数可暂停执行，每次执行时遇到一下逻辑暂停执行，或者终止执行。
+    - 遇到 yield 关键字
+    - 遇到 return 关键字
+    - Generator对象抛出 throw 
+    - 运行到函数体结尾
 - Generator 函数同时遵守 **iterable协议** 与 **iterator协议**
 - Generator 函数内部 yield 关键字后面可以带另一个遵守 **iterator协议** 的对象
 
 Generator 对象具有三个方法
-- yield
-- return
-- throw
+- next 执行下一段函数体逻辑
+- return 提前终止函数体逻辑
+- throw 抛出可被函数体接收的错误
 
