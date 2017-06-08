@@ -22,8 +22,8 @@ var promise = new Promise(function(resolve, reject){
 })
 ```
 Promise 可以看成是一个黑箱，里面的具体逻辑使用时我们可以不用关心，它有三种状态。
-- pending 正在执行
-- fulfilled 执行成功
-- rejected 执行失败
+- pending 
+- fulfilled 
+- rejected 
 
-通过 new Promise() 返回一个 Promise对象 ，我们可以在这个 Promise对象 中设置
+Promise 的默认状态是 pending ，在函数执行的过程中状态有可能被 resolve() 改变为 fulfilled（成功，也有可能被 reject() 改变为 rejected（失败）。Promise 状态一旦改变，无法再次更改。
