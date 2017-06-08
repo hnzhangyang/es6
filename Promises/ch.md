@@ -15,7 +15,10 @@ new Promise(function(resolve, reject){
     // some code
 })
 ```
-构造函数 Promise 接受一个回调方法，这个方法接受两个参数，resolve 和 reject。方法内我们用这两个参数来设置 promise 的状态。
+构造函数 Promise 接受一个回调方法，这个方法接受两个参数。
+- resolve
+- reject
+方法内我们用这两个参数来设置 promise 的状态。
 ``` javaScript
 var promise = new Promise(function(resolve, reject){
     resolve()
