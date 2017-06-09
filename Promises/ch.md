@@ -390,3 +390,22 @@ console.log('script end');
 // setTimeout
 ```
 比较下event loop 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。到现在2017/6/9，新版本的Firefox，Chrome，Ie 都是先执行 promise microTask 任务。一些比较老的版本可能会按顺序执行任务。
+
+好了，现在对浏览器执行 javaScript 任务的时候应该有初步了解了。接下来我们更进一步。
+
+不要忘了我们还有一个最常用的异步任务没有讨论--绑定事件。
+
+绑定事件是与 javaScript 与 dom 交互中最常用的功能，请看下面代码。
+``` html
+<style>
+    #outer {
+        border:1px solid black;width:200px;height:200px"
+    }
+    #inner {
+        border:1px solid black;width:100px;height:100px
+    }
+</style>
+<div id="outer">outer
+    <div id="inner">inner</div>
+</div>
+```
