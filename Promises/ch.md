@@ -1,12 +1,12 @@
 # Promises
 ## 目录
 - [Promise](#promise)
-- [Promise树](#Promise树)
+- [Promise 树](#Promise树)
 - [Promise.resolve](#Promise.resolve)
 - [Promise.reject](#Promise.reject)
 - [Promise.all](#Promise.all)
 - [Promise.race](#Promise.race)
-- [关于javaScript的单线程](#关于javaScript的单线程)
+- [关于 javaScript 的单线程](#关于javaScript的单线程)
     - [一个简单的例子](#一个简单的例子)
     - [event](#event)
     - [总结](#总结)
