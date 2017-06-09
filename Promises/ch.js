@@ -1,13 +1,16 @@
-console.log('script start');
+var outer = document.getElementById('outer');
+var inner = document.getElementById('inner');
 
-setTimeout(function() {
-  console.log('setTimeout');
-}, 0);
+function clk(){
+    console.log('click')
+    setTimeout(function(){
+        console.log('timeout');
+    },0)
+    Promise.resolve().then(function(){
+        console.log('promise')
+    })
+}
 
-Promise.resolve().then(function() {
-  console.log('promise1');
-}).then(function() {
-  console.log('promise2');
-});
-
-console.log('script end');
+inner.addEventListener('click', clk);
+outer.addEventListener('click', clk);
+inner.click();

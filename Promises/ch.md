@@ -316,22 +316,76 @@ console.log('script end');
 在相对于比较老版本的浏览器中 **setTimeout** 输出在 **promise1 promse2** 之前，不过这并不影响我们理解 javaScript 的线程机制。
 
 大家都知道 javaScript 是单线程，这个不多说，但是具体执行的时候是什么情况？
-``` javaScript
-console.log('script start');
+``` HTML
+<script>
+    console.log('script start');
 
-setTimeout(function() {
-  console.log('setTimeout');
-}, 0);
+    setTimeout(function() {
+        console.log('setTimeout');
+    }, 0);
 
-Promise.resolve().then(function() {
-  console.log('promise1');
-}).then(function() {
-  console.log('promise2');
-});
+    Promise.resolve().then(function() {
+        console.log('promise1');
+    }).then(function() {
+        console.log('promise2');
+    });
 
-console.log('script end');
+    console.log('script end');
+</script>
 ```
 还是上面的代码，它是一个比较典型的例子，在上面代码块中一共有三种任务。
-- js
+- js 代码块整体
 - setTimeout
 - promise
+
+其中 **setTimeout** 和 **promise** 是包含在js 代码块整体内。
+
+ok，javaScript 是单线程，想象有一条 event loop 线。
+
+当程序执行到 \<script\> 标签的时候，event loop 上被安排了一个任务，执行 \<script\> 代码。
+``` html
+<script></script>
+```
+继续往下走，找到了
+``` javaScript
+console.log('script start');
+```
+浏览器输出 ”script start“，继续往下
+``` javaScript
+    setTimeout(function() {
+        console.log('setTimeout');
+    }, 0);
+```
+setTimeout 添加了一个异步任务（不要在乎他的延迟只有0，不管延迟多少，它就是一个异步任务）。我们把这个异步任务成为一个 **task**。**task** 被添加到我们的主线程 event loop 下，现在 event loop 下有两个任务。
+- 执行 \<script\> 代码块
+- setTimeout task
+
+第一个任务 执行 \<script\> 代码块 还没完成，task 任务得延迟处理。继续往下
+``` javaScript
+Promise.resolve().then(function() {
+    console.log('promise1');
+}).then(function() {
+    console.log('promise2');
+});
+```
+好，我们发现了 Promise，把 Promise 标记为 microTask，丢在 event loop 最尾端，现在的 event loop 是
+- 执行 \<script\> 代码块
+- setTimeout task
+- promise microTask
+继续执行第一个任务
+``` javaScript
+console.log('script end');
+```
+浏览器输出 ”script end“，好了，现在第一个任务执行完了，event loop 剩下
+- setTimeout task
+- promise microTask
+
+还记的我们的输出结果吗？
+``` javaScript
+// script start
+// script end
+// promise1
+// promise2
+// setTimeout
+```
+比较下event loop 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。我这里用的是 Chrome ，是 promise microTask 先执行。
