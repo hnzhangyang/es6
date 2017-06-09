@@ -287,3 +287,27 @@ promise.catch(function(arr){
 ```
 同样的，当有参数不是 Promise 对象时，会调用上文提到的 **Promise.resolve** 方法，使其变成 Promise 对象，状态为 **fulfilled**。
 ## 关于javaScript的单线程
+思考下面的输出。
+``` javaScript
+console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+
+console.log('script end');
+```
+答案，呃... 不一定，现在主流的浏览器输出是下面的结果。
+``` javaScrpt
+// script start
+// script end
+// promise1
+// promise2
+// setTimeout
+```

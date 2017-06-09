@@ -1,17 +1,13 @@
-var p1 = new Promise(function(resolve, reject){
-    reject('p1')
-})
+console.log('script start');
 
-var p2 = new Promise(function(resolve, reject){
-    reject('p2')
-})
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
 
-var p3 = new Promise(function(resolve, reject){
-    reject('p3')
-})
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
 
-var promise = Promise.race([p2,p1,  p3])
-
-promise.catch(function(arr){
-    console.log(arr)
-})
+console.log('script end');
