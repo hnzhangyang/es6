@@ -108,3 +108,182 @@ promise.then(function (message) {
 // success again
 // error
 ```
+## Promise树
+上面一节说到。
+- 一个 promise 对象可以绑定任意个 **then** 和 **catch** 方法。
+- **then** 和 **catch** 方法总是返回另一个 Promise 对象
+
+这意味着我们可以甚至可以生成一个树状结构的 Promise 链式调用。
+``` javaScript
+var p1 = new Promise(function (reslove, reject) {
+    resolve()
+})
+
+p2 = p1.then(function () {
+    throw 'error'
+})
+
+p3 = p2.catch(function (error) {
+    console.log(error)
+})
+
+p4 = p3.catch(function (error) {
+    console.log(error + 'again')
+})
+
+// error
+```
+为什么 “error agamin” 没有输出？
+- 1、p1 是 Promise 构造函数返回的 Promise 对象
+- 2、p2 是 p1 **then** 方法返回的新 Promise
+- 3、p3 是 p2 **catch** 方法返回的新 Promise
+- 4、p4 是 p3 **catch** 方法返回的新 Promise
+- 5、当 p1 被设定之后，**p1.then** 执行
+- 6、当 **p1.then** 执行后 **p2.catch** 执行
+- 7、**p2.catch** 并没有抛出错误，所以 **p3.catch** 不会执行
+
+实际上你可以任意的引用 Promise 树上的任意一个节点绑定人任意个回调事件。
+## Promise.resolve
+有时候你想要创建一个 Promise 对象，但是你又不想麻烦。
+``` javaScript
+var promise = new Promise(function)(resolve, reject){
+    resolve('success')
+}
+```
+可以写成。
+``` javaScript
+var promise = Promise.resolve('succcess')
+```
+用 **Promise.resolve** 返回的 Promise 对象，内部状态为 **fulfilled**，在其绑定的 **then** 方法会立即执行。
+``` javaScript
+var promise = Promise.resolve('succcess')
+
+promise.then(function(message){
+    console.log(message)
+})
+// success
+```  
+如果传递给 **Promise.resolve** 方法的参数是一个带有 **then** 方法的对象，会立即执行这个 **then** 方法。
+``` javaScript
+var foo = {
+    then: function(){
+        console.log('foo')
+    }
+}
+
+Promise.resolve(foo)
+// foo
+```
+## Promise.reject
+同样的，**Promise.reject** 也会返回一个新的 Promise 对象，该对象的状态标记为 **rejected**。
+``` javaScript
+var promise = Promise.reject('error')
+
+promise.catch(function(error){
+    console.log(error)
+})
+// error
+```
+## Promise.all
+**Promise.all** 接受一个成员是 Promise 对象的数组，返回一个 Promise 对象，**Promise.all** 的状态有数组里面所有的 Promise 共同决定。
+- 当所有的 Promise 状态为 **resolve** 时 **Promise.all** 状态为 **resolve**，返回所有 Promise 的返回值组成的数组。
+- 只要有一个 Promise 的状态为 **reject**，**Promise.all**状态为 **reject**，并返回第一个状态标记为 **reject** 的对象的返回值。
+``` javaScript
+var p1 = new Promise(function(resolve, reject){
+    resolve('p1')
+})
+
+var p2 = new Promise(function(resolve, reject){
+    resolve('p2')
+})
+
+var p3 = new Promise(function(resolve, reject){
+    resolve('p3')
+})
+
+var p4 = new Promise(function(resolve, reject){
+    reject('p4')
+})
+
+var promise1 = Promise.all([p1, p2, p3])
+
+var promise2 = Promise.all([p1, p2, p3, p4])
+
+promise.then(function(arr){
+    console.log(arr)
+})
+// ["p1", "p2", "p3"]
+
+promise2.catch(function(error){
+    console.log(error)
+})
+// p4
+```
+当 **Promise.all** 接受的数组成员有一个不是 Promise 对象时，会调用上面的 **Promise.resolve** 方法。
+``` javaScript
+var p1 = new Promise(function(resolve, reject){
+    resolve('p1')
+})
+
+var p2 = new Promise(function(resolve, reject){
+    resolve('p2')
+})
+
+var p3 = new Promise(function(resolve, reject){
+    resolve('p3')
+})
+
+var promise = Promise.all([p1, p2, p3, 'p4'])
+
+promise.then(function(arr){
+    console.log(arr);
+})
+// ["p1", "p2", "p3", "p4"]
+```
+## Promise.race
+同 **Promise.all**，**Promise.race** 也接受一个由 Promise 对象组成的数组作为参数，返回一个 Promise 对象。
+
+不同的是，只要数组中一个 Promise 对象的状态变为 **resolve**，Promise.race 的状态就变为 **resolve**，并返回第一个改变状态的 promise 对象的返回值。
+``` javaScript
+var p1 = new Promise(function(resolve, reject){
+    resolve('p1')
+})
+
+var p2 = new Promise(function(resolve, reject){
+    resolve('p2')
+})
+
+var p3 = new Promise(function(resolve, reject){
+    reject('p3')
+})
+
+var promise = Promise.race([p1, p2, p3])
+
+promise.then(function(arr){
+    console.log(arr)
+})
+// p1
+``` 
+当所有 Promise 对象的状态都为 **reject** 时，**Promise.race** 的状态变为 **reject**。返回第一个状态变为 **reject** 的 Promise 对象的返回值。
+``` javaScript
+var p1 = new Promise(function(resolve, reject){
+    reject('p1')
+})
+
+var p2 = new Promise(function(resolve, reject){
+    reject('p2')
+})
+
+var p3 = new Promise(function(resolve, reject){
+    reject('p3')
+})
+
+var promise = Promise.race([p1, p2, p3])
+
+promise.catch(function(arr){
+    console.log(arr)
+})
+// p1
+```
+同样的，当有参数不是 Promise 对象时，会调用上文提到的 **Promise.resolve** 方法，使其变成 Promise 对象，状态为 **fulfilled**。
+## 关于javaScript的单线程

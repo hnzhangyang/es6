@@ -1,13 +1,17 @@
-var promise = new Promise(function (reslove, reject) {
-    reslove('success')
+var p1 = new Promise(function(resolve, reject){
+    reject('p1')
 })
 
-promise.then(function (message) {
-    console.log(message)
-    return 'success again'
-}).then(function (message) {
-    console.log(message)
-    throw 'error'
-}).catch(function (error) {
-    console.log(error)
+var p2 = new Promise(function(resolve, reject){
+    reject('p2')
+})
+
+var p3 = new Promise(function(resolve, reject){
+    reject('p3')
+})
+
+var promise = Promise.race([p2,p1,  p3])
+
+promise.catch(function(arr){
+    console.log(arr)
 })
