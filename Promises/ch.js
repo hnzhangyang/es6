@@ -1,8 +1,13 @@
-
-var promise = new Promise(function(resolve, reject){
-    reject()
+var promise = new Promise(function (reslove, reject) {
+    reslove('success')
 })
 
-promise.catch(function(){
-    console.log('error!')
+promise.then(function (message) {
+    console.log(message)
+    return 'success again'
+}).then(function (message) {
+    console.log(message)
+    throw 'error'
+}).catch(function (error) {
+    console.log(error)
 })
