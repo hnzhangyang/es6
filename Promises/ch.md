@@ -314,3 +314,24 @@ console.log('script end');
 有争议的地方是 **promise1 promse2** 与 **setTimeout** 的先后顺序。
 
 在相对于比较老版本的浏览器中 **setTimeout** 输出在 **promise1 promse2** 之前，不过这并不影响我们理解 javaScript 的线程机制。
+
+大家都知道 javaScript 是单线程，这个不多说，但是具体执行的时候是什么情况？
+``` javaScript
+console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+
+console.log('script end');
+```
+还是上面的代码，它是一个比较典型的例子，在上面代码块中一共有三种任务。
+- js
+- setTimeout
+- promise
