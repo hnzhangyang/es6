@@ -311,3 +311,6 @@ console.log('script end');
 // promise2
 // setTimeout
 ```
+有争议的地方是 **promise1 promse2** 与 **setTimeout** 的先后顺序。
+
+在相对于比较老版本的浏览器中 **setTimeout** 输出在 **promise1 promse2** 之前，不过这并不影响我们理解 javaScript 的线程机制。
