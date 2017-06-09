@@ -405,7 +405,71 @@ console.log('script end');
         border:1px solid black;width:100px;height:100px
     }
 </style>
+
 <div id="outer">outer
     <div id="inner">inner</div>
 </div>
 ```
+``` javaScript
+var outer = document.getElementById('outer');
+var inner = document.getElementById('inner');
+
+function clk(){
+    console.log('click')
+    setTimeout(function(){
+        console.log('timeout');
+    },0)
+    Promise.resolve().then(function(){
+        console.log('promise')
+    })
+}
+
+inner.addEventListener('click', clk);
+outer.addEventListener('click', clk);
+```
+我们分别为两个嵌套的 div 绑定了点击事件，思考输出结果。
+``` javaScript
+// click
+// promise
+// click
+// promise
+// timeout
+// timeout
+```
+可怜 timeout 还是在最尾端...
+
+这里的 event loop 的执行过程不详解了，跟第一个例子很大程度上是相同的，这里的 event loop 的执行顺序为
+- \<script\> 
+- microTask
+- event
+- task
+
+有一点需要注意的是，当我们不手动触发，而是选择自动触发 click 事件时，结果会不会相同呢？
+``` javaScript
+inner.click()
+```
+``` javaScript
+// click
+// click
+// promise
+// promise
+// timeout
+// timeout
+```
+event 的执行顺序被提升了!
+
+这是因为当我们 手动触发 inner.click() 的时候，导致两个 event 事件同步执行，既然是同步的，当然要比异步的先执行了。
+
+经过这两个简单的例子，大家应该对 event loop 有一个比较直观的认识了，它遵守几条规律。
+- 1、event loop 只有一条执行线，每次只能执行一个任务。
+- 2、先执行同步任务，再执行异步任务。
+- 3、异步任务有三种
+    - Promise 产生的 microTask
+    - 事件绑定的 event 
+    - setTimeout，setInterval 产生的 task
+- 4、异步任务按照以下顺序执行
+    - microTask
+    - event
+    - task
+
+我们现在讨论的仅仅是异步任务在 **相同时刻** 添加进 event loop 中的情况。这种情况下event loop 会按照以上顺序执行异步任务。如果时间不同，会简单的以时间为主执行。
