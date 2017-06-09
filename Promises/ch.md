@@ -7,6 +7,9 @@
 - [Promise.all](#Promise.all)
 - [Promise.race](#Promise.race)
 - [关于javaScript的单线程](#关于javaScript的单线程)
+    - [一个简单的例子](#一个简单的例子)
+    - [event](#event)
+    - [总结](#总结)
 
 ## Promise
 Promise 是一种异步编程的解决方案，我们用构造函数 Promise 来声明一个 promise。
@@ -287,6 +290,9 @@ promise.catch(function(arr){
 ```
 同样的，当有参数不是 Promise 对象时，会调用上文提到的 **Promise.resolve** 方法，使其变成 Promise 对象，状态为 **fulfilled**。
 ## 关于javaScript的单线程
+
+### 一个简单的例子
+
 思考下面的输出。
 ``` javaScript
 console.log('script start');
@@ -315,6 +321,8 @@ console.log('script end');
 
 在相对于比较老版本的浏览器中 **setTimeout** 输出在 **promise1 promse2** 之前，不过这并不影响我们理解 javaScript 的线程机制。
 
+### 过程分析
+
 大家都知道 javaScript 是单线程，这个不多说，但是具体执行的时候是什么情况？
 ``` HTML
 <script>
@@ -334,15 +342,15 @@ console.log('script end');
 </script>
 ```
 还是上面的代码，它是一个比较典型的例子，在上面代码块中一共有三种任务。
-- js 代码块整体
+- 执行 \<script\> 代码块
 - setTimeout
 - promise
 
 其中 **setTimeout** 和 **promise** 是包含在js 代码块整体内。
 
-ok，javaScript 是单线程，想象有一条 event loop 线。
+ok，javaScript 是单线程，想象有一条 **event loop** 线。
 
-当程序执行到 \<script\> 标签的时候，event loop 上被安排了一个任务，执行 \<script\> 代码。
+当程序执行到 \<script\> 标签的时候，**event loop** 上被安排了一个任务 --- 执行 \<script\> 代码。
 ``` html
 <script></script>
 ```
@@ -352,15 +360,17 @@ console.log('script start');
 ```
 浏览器输出 ”script start“，继续往下
 ``` javaScript
-    setTimeout(function() {
-        console.log('setTimeout');
-    }, 0);
+setTimeout(function() {
+    console.log('setTimeout');
+}, 0);
 ```
-setTimeout 添加了一个异步任务（不要在乎他的延迟只有0，不管延迟多少，它就是一个异步任务）。我们把这个异步任务成为一个 **task**。**task** 被添加到我们的主线程 event loop 下，现在 event loop 下有两个任务。
+setTimeout 添加了一个异步任务（不要在乎他的延迟只有0，不管延迟多少，它就是一个异步任务）。
+
+我们把这个异步任务成为一个 **task**。**task** 被添加到我们的主线程 **event loop** 下，现在 **event loop** 下有两个任务。
 - 执行 \<script\> 代码块
 - setTimeout task
 
-第一个任务 执行 \<script\> 代码块 还没完成，task 任务得延迟处理。继续往下
+第一个任务 执行 \<script\> 代码块 还没完成，**task** 任务得延迟处理。继续往下
 ``` javaScript
 Promise.resolve().then(function() {
     console.log('promise1');
@@ -368,7 +378,7 @@ Promise.resolve().then(function() {
     console.log('promise2');
 });
 ```
-好，我们发现了 Promise，把 Promise 标记为 microTask，丢在 event loop 最尾端，现在的 event loop 是
+好，我们发现了 Promise，把 Promise 标记为 **microTask**，丢在 **event loop** 最尾端，现在的 **event loop** 是
 - 执行 \<script\> 代码块
 - setTimeout task
 - promise microTask
@@ -377,7 +387,7 @@ Promise.resolve().then(function() {
 ``` javaScript
 console.log('script end');
 ```
-浏览器输出 ”script end“，好了，现在第一个任务执行完了，event loop 剩下
+浏览器输出 ”script end“，好了，现在第一个任务执行完了，**event loop** 剩下
 - setTimeout task
 - promise microTask
 
@@ -389,13 +399,17 @@ console.log('script end');
 // promise2
 // setTimeout
 ```
-比较下event loop 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。到现在2017/6/9，新版本的Firefox，Chrome，Ie 都是先执行 promise microTask 任务。一些比较老的版本可能会按顺序执行任务。
+比较下 **event loop** 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。
+
+到现在2017/6/9，新版本的Firefox，Chrome，Ie 都是先执行 promise microTask 任务。一些比较老的版本可能会按顺序执行任务。
+
+### event 
 
 好了，现在对浏览器执行 javaScript 任务的时候应该有初步了解了。接下来我们更进一步。
 
 不要忘了我们还有一个最常用的异步任务没有讨论--绑定事件。
 
-绑定事件是与 javaScript 与 dom 交互中最常用的功能，请看下面代码。
+绑定事件是与 javaScript 与 dom 交互中最常用的功能，看下面代码。
 ``` html
 <style>
     #outer {
@@ -427,7 +441,7 @@ function clk(){
 inner.addEventListener('click', clk);
 outer.addEventListener('click', clk);
 ```
-我们分别为两个嵌套的 div 绑定了点击事件，思考输出结果。
+我们分别为两个嵌套的 div 绑定了点击事件，点击里面那个，思考输出结果。
 ``` javaScript
 // click
 // promise
@@ -438,7 +452,7 @@ outer.addEventListener('click', clk);
 ```
 可怜 timeout 还是在最尾端...
 
-这里的 event loop 的执行过程不详解了，跟第一个例子很大程度上是相同的，这里的 event loop 的执行顺序为
+这里的 **event loop** 的执行过程不详解了，跟第一个例子很大程度上是相同的，这里的 event loop 的执行顺序为
 - \<script\> 
 - microTask
 - event
@@ -460,7 +474,9 @@ event 的执行顺序被提升了!
 
 这是因为当我们 手动触发 inner.click() 的时候，导致两个 event 事件同步执行，既然是同步的，当然要比异步的先执行了。
 
-经过这两个简单的例子，大家应该对 event loop 有一个比较直观的认识了，它遵守几条规律。
+### 总结
+
+经过这两个简单的例子，大家应该对 **event loop** 有一个比较直观的认识了，它遵守几条规律。
 - 1、event loop 只有一条执行线，每次只能执行一个任务。
 - 2、先执行同步任务，再执行异步任务。
 - 3、异步任务有三种
@@ -472,4 +488,4 @@ event 的执行顺序被提升了!
     - event
     - task
 
-我们现在讨论的仅仅是异步任务在 **相同时刻** 添加进 event loop 中的情况。这种情况下event loop 会按照以上顺序执行异步任务。如果时间不同，会简单的以时间为主执行。
+我们现在讨论的仅仅是异步任务在 **相同时刻** 添加进 **event loop** 中的情况。这种情况下 **event loop** 会按照以上顺序执行异步任务。如果时间不同，会简单的以时间为主执行。
