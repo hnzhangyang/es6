@@ -22,20 +22,30 @@ var promise = new Promise(function(resolve, reject){
 })
 ```
 Promise 可以看成是一个黑箱，里面的具体逻辑使用时我们可以不用关心，它有三种状态。
-- pending 
-- fulfilled 
-- rejected 
+- **pending** 
+- **fulfilled** 
+- **rejected** 
 
-Promise 的默认状态是 pending ，在函数执行的过程中状态有可能被 resolve() 改变为 fulfilled（成功，也有可能被 reject() 改变为 rejected（失败）。Promise 状态一旦改变，无法再次更改。
+Promise 的默认状态是 **pending** ，在函数执行的过程中状态有可能被 resolve() 改变为 **fulfilled**（成功），也有可能被 reject() 改变为 **rejected**（失败）。Promise 状态一旦改变，无法再次更改。
 
-构造函数 Promise 返回一个 promise 对象，当Promose 的状态变为 fulfilled 时，触发对象上 then 方法绑定的回调函数。当 Promise 的状态变为 rejected 时，触发对象上 catch 方法绑定的回调函数。
+构造函数 Promise 返回一个 promise 对象。promise 对象有一个 **then** 方法，**then** 方法接受两个参数，第一个参数是 Promise 函数状态变为 **fulfilled** 的回调函数，第二个参数是 Promise 状态变为 **rejected** 的回调函数。
 ``` javaScript
 var promise1 = new Promise(function(resolve, reject){
-    resolve('success');
+    resolve('success')
+})
+
+var promise2 = new Promise(function(resolve, reject){
+    reject('error')
 })
 
 promise1.then(function(message){
-    
+    console.log(message)
 })
+// success
+
+promise2.then(null,function(error){
+    console.log(error)
+})
+// error
 
 ```
