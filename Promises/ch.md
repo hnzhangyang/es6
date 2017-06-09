@@ -372,6 +372,7 @@ Promise.resolve().then(function() {
 - 执行 \<script\> 代码块
 - setTimeout task
 - promise microTask
+
 继续执行第一个任务
 ``` javaScript
 console.log('script end');
@@ -388,4 +389,4 @@ console.log('script end');
 // promise2
 // setTimeout
 ```
-比较下event loop 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。我这里用的是 Chrome ，是 promise microTask 先执行。
+比较下event loop 和输出结果，发现明明 setTimeout task 在上面，却 promise microTask 先执行，这里就是有争议的地方，具体执行顺序，得看浏览器爸爸，他说哪个先执行，哪个就先执行。到现在2017/6/9，新版本的Firefox，Chrome，Ie 都是先执行 promise microTask 任务。一些比较老的版本可能会按顺序执行任务。
