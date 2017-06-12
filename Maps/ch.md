@@ -25,3 +25,18 @@ console.log(obj);
 console.log(foo.toString())
 // foo
 ```
+实际上通过 Map 构造函数传入一个支持  [iterator](https://github.com/hnzhangyang/es6/blob/master/Iterators/ch.md)  协议的对象，可以快速定义 Map 的内容。（还记的 [iterator](https://github.com/hnzhangyang/es6/blob/master/Iterators/ch.md) 协议吧？这里用数组表示）。
+``` javaScript
+var arr = [
+    [ 'foo', 'foo' ],
+    [ 'bar', 'bar' ]
+]
+
+var map = new Map(arr)
+
+console.log(map.get('foo'))
+// foo
+console.log(map.get('bar'))
+// bar
+```
+## Map实例

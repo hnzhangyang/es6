@@ -1,7 +1,9 @@
-var obj = new Object()
-var foo = ['foo']
+var arr = ['foo','bar'
+]
 
-obj[foo] = 'im foo'
-console.log(obj);
-// Object {foo: "im foo"}
-console.log(foo.toString())
+var map = new Map(arr)
+console.log(...map)
+console.log(map.get('foo'))
+// foo
+console.log(map.get('bar'))
+// bar
