@@ -40,3 +40,4 @@ console.log(map.get('bar'))
 // bar
 ```
 ## Map实例
+test
