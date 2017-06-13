@@ -69,3 +69,48 @@ arr.length = 0
 console.log(arr)
 // []
 ```
+在 **set** 方法中，给同一个 **键** 赋值会覆盖上一个值。
+``` javaScript
+var map = new Map()
+
+map.set('foo','foo')
+map.set('foo','bar')
+
+console.log(map.get('foo'))
+// bar
+```
+
+在 javaScript 中，**NaN** 与 **NaN** 既不相等，也不全等。但是在 Map 中，**NaN** 总是指向同一个 **键**。
+``` javaScript
+var map = new Map()
+
+map.set(NaN,'foo')
+map.set(NaN,'bar')
+
+console.log(map.get(NaN))
+// bar
+```
+而， javaScript 中，**null** 是一个空指针，**undefined** 是一个空指针的引用，这两者非严格相等，但是在 Map 中是作为两个不等的 **键** 。
+``` javaScript
+var map = new Map()
+
+console.log(null == undefined)
+// true
+
+map.set(null,'null')
+map.set(undefined,'undefined')
+
+console.log(map.get(null))
+// null
+console.log(map.get(undefined))
+// undefined
+```  
+Symbol 总是不相等，总是作为不相等的 **键**。
+``` javaScript
+var map = new Map()
+
+map.set(Symbol(),'Symbol')
+
+console.log(map.has(Symbol())
+// false
+```
