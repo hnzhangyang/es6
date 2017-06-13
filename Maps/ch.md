@@ -44,12 +44,13 @@ console.log(map.get('bar'))
 ``` javaScript 
 var map = new Map()
 ```
-Map 实例具有以下方法
+Map 实例具有以下方法或属性
 - set
 - get
 - delete
 - has
 - size
+- forEach
 
 其中 **size** 是只读属性。并不像数组的 **length** 属性一样可以改变其长度。
 ``` javaScript
@@ -113,4 +114,26 @@ map.set(Symbol(),'Symbol')
 
 console.log(map.has(Symbol())
 // false
+```
+同样的，数字 1 与字符串 '1',也属于不同的 **键**。
+``` javaScript
+var map = new Map()
+
+map.set(1,'Symbol')
+
+console.log(map.has('1')
+// false
+```
+Map 实例的 **forEach** 方法，它可以遍历 Map 实例中所有的 **键值对**。
+``` javaScript
+var map = new Map()
+
+map.set('foo','foo')
+map.set('bar','bar')
+
+map.forEach(function(key, value){
+    console.log(key,value)
+})
+// foo foo
+// bar bar
 ```
