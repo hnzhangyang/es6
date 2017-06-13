@@ -40,4 +40,32 @@ console.log(map.get('bar'))
 // bar
 ```
 ## Map实例
-test
+通过 Map 构造函数创建 Map 实例。
+``` javaScript 
+var map = new Map()
+```
+Map 实例具有以下方法
+- set
+- get
+- delete
+- has
+- size
+
+其中 **size** 是只读属性。并不像数组的 **length** 属性一样可以改变其长度。
+``` javaScript
+var map = new Map([['foo','foo']])
+var arr = ['foo']
+
+console.log(map.size)
+// 1
+console.log(arr.length)
+// 1
+
+map.size = 0
+console.log(map.has('foo'))
+// true
+
+arr.length = 0
+console.log(arr)
+// []
+```
