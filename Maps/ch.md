@@ -3,6 +3,7 @@
 - [Map](#Map)
 - [Map实例](#Map实例)
 - [WeakMap](#WeakMap)
+- [总结](#总结)
 ## Map
 对象是键值对的集合，**键** 只能是字符串，**值** 可以是任意值，ES6 Map扩展了这一方面，Map 的 **键和值** 都可以是任意值。
 ``` javaScript
@@ -205,7 +206,7 @@ map.set(null,'value')
 map.set(Symbol(),'value')
 // Invalid value used as weak map key
 ```
-同时，WeakMap 也不遵守 iterable 协议，这意味着相比 Map ， WeakMap 不能使用 **entries** ， **clear** ， **keys** ， **values** ，**forEach** , **size** 方法。WeakMap 能使用发方法有
+同时，WeakMap 也不遵守 **iterable** 协议，这意味着相比 Map ， WeakMap 不能使用 **entries** ， **clear** ， **keys** ， **values** ，**forEach** , **size** 方法。WeakMap 能使用发方法有
 - set
 - get
 - has
@@ -230,4 +231,22 @@ weakMap.set(foo, 'value')
 console.log(weakMap.get(foo))
 // value
 ```
-这么多限制，WeakMap 要它有什么用？值得注意的是 WeakMap 只能保存 **引用类型** 的 **键**，所以一般我们利用这一特性可以保证目标对象不被浏览器垃圾回收机制回收消除。
+这么多限制，WeakMap 要它有什么用？值得注意的是 WeakMap 只能保存 **引用类型** 的 **键**，所以一般我们利用这一特性让 WeakMap 成为目标对象不被浏览器垃圾回收机制回收的最后把关。
+
+## 总结
+Map 是 ES6 新提出的宽泛的 **键值对** 集合，Map 的 **键** 允许使用所有的类型，不单单是字符串与数字。Map 具有以下方法或属性。
+- set
+- get
+- delete
+- has
+- size
+- forEach
+- clear
+- keys
+- values
+- entries
+WeakMap 可以看作是 Map 的严格子集，它的 **键** 只能是引用类型，并且 WeakMap 也不遵守 **iterable** 协议，它具有以下方法。
+- set
+- get
+- has
+- delete
