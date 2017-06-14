@@ -2,6 +2,7 @@
 ## 目录
 - [Map](#Map)
 - [Map实例](#Map实例)
+- [WeakMap](#WeakMap)
 ## Map
 对象是键值对的集合，**键** 只能是字符串，**值** 可以是任意值，ES6 Map扩展了这一方面，Map 的 **键和值** 都可以是任意值。
 ``` javaScript
@@ -52,6 +53,9 @@ Map 实例具有以下方法或属性
 - size
 - forEach
 - clear
+- keys
+- values
+- entries
 
 其中 **size** 是只读属性。并不像数组的 **length** 属性一样可以改变其长度。
 ``` javaScript
@@ -81,6 +85,19 @@ map.set('foo','bar')
 console.log(map.get('foo'))
 // bar
 ```
+Map 实例的 **键** 的判断标准是，该 **键** 是否是同一个引用地址，有些情况下可能会导致混淆，误认为两个 **键** 是同一个 **键**。
+``` javaScript
+var bar = ['value']
+var foo = ['value']
+
+var map = new Map()
+
+map.set(bar,'value')
+
+console.log(map.has(foo))
+// false
+```
+以上的 foo 与 bar 虽然引用的结构一样，但是却是两个不同的引用地址，所以在 Map 中被当作是两个 **键**。 
 
 在 javaScript 中，**NaN** 与 **NaN** 既不相等，也不全等。但是在 Map 中，**NaN** 总是指向同一个 **键**。
 ``` javaScript
@@ -138,7 +155,17 @@ map.forEach(function(key, value){
 // foo foo
 // bar bar
 ```
-以及 clear 方法。
+
+**entries** 方法用于输出 Map 实例中所有的 **键值对**。
+``` javaScript
+var map = new Map([
+    ['foo', 'foo'], ['bar', 'bar']
+])
+
+console.log(...map.entries())
+// ["foo", "foo"] ["bar", "bar"]
+```
+**clear** 方法清除 Map 实例中所有的 **键值对**。
 ``` javaScript
 var map = new Map([['foo','foo']])
 
@@ -149,3 +176,58 @@ map.clear()
 console.log(map.size)
 // 0
 ```
+**keys** 和 **values** 方法用于返回 Map 实例中所有的 **键** ， **值**。
+``` javaScript
+var map = new Map([
+    ['foo', 'foo'], ['bar', 'bar']
+])
+
+console.log(...map.keys())
+// foo bar
+console.log(...map.values())
+// foo bar
+```
+## WeakMap
+WeakMap 可以看作是 Map 的严格子集，它的 **键** 只能是引用类型，这意味着 6 种基本类型的 **键** 都是不允许的。
+``` javaScript
+var map = new WeakMap()
+
+map.set(1,'value')
+//  Invalid value used as weak map key
+map.set('1','value')
+//  Invalid value used as weak map key
+map.set(true,'value')
+//  Invalid value used as weak map key
+map.set(undefined,'value')
+//  Invalid value used as weak map key
+map.set(null,'value')
+//  Invalid value used as weak map key
+map.set(Symbol(),'value')
+// Invalid value used as weak map key
+```
+同时，WeakMap 也不遵守 iterable 协议，这意味着相比 Map ， WeakMap 不能使用 **entries** ， **clear** ， **keys** ， **values** ，**forEach** , **size** 方法。WeakMap 能使用发方法有
+- set
+- get
+- has
+- delete
+同时也支持构造函数快速设置 **键值对**。
+```
+var foo = {}
+var bar = {}
+
+var weakMap = new WeakMap([
+    [foo, 'foo'], [bar, 'bar']
+])
+
+console.log(weakMap.has(foo))
+// true
+
+weakMap.delete(foo)
+console.log(weakMap.has(foo))
+// false
+
+weakMap.set(foo, 'value')
+console.log(weakMap.get(foo))
+// value
+```
+这么多限制，WeakMap 要它有什么用？值得注意的是 WeakMap 只能保存 **引用类型** 的 **键**，所以一般我们利用这一特性可以保证目标对象不被浏览器垃圾回收机制回收消除。

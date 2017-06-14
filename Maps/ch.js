@@ -1,9 +1,17 @@
-var arr = ['foo','bar'
-]
+var foo = {}
+var bar = {}
 
-var map = new Map(arr)
-console.log(...map)
-console.log(map.get('foo'))
-// foo
-console.log(map.get('bar'))
-// bar
+var weakMap = new WeakMap([
+    [foo, 'foo'], [bar, 'bar']
+])
+
+console.log(weakMap.has(foo))
+// true
+
+weakMap.delete(foo)
+console.log(weakMap.has(foo))
+// false
+
+weakMap.set(foo, 'value')
+console.log(weakMap.get(foo))
+// value
