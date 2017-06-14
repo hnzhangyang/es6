@@ -51,6 +51,7 @@ Map 实例具有以下方法或属性
 - has
 - size
 - forEach
+- clear
 
 其中 **size** 是只读属性。并不像数组的 **length** 属性一样可以改变其长度。
 ``` javaScript
@@ -136,4 +137,15 @@ map.forEach(function(key, value){
 })
 // foo foo
 // bar bar
+```
+以及 clear 方法。
+``` javaScript
+var map = new Map([['foo','foo']])
+
+console.log(map.size)
+// 1
+
+map.clear()
+console.log(map.size)
+// 0
 ```
