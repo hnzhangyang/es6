@@ -73,7 +73,7 @@ var proxy = getProxy()
 ## Proxy.revocable
 Proxy.revocable 与 Proxy 很相似，它返回两个对象 **proxy** 与 **revoke**。
 
-其中 **proxy** 就是上述的代理实例，**revoke** 是一个方法，它可以撤销所有代理方法。
+其中 **proxy** 就是上述的代理实例，**revoke** 是一个方法，它可以撤销所有代理。
 ``` javaScript
 var target = {}
 var handler = {}
