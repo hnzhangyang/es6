@@ -78,9 +78,11 @@ Proxy.revocable 与 Proxy 很相似，它返回两个对象 **proxy** 与 **revo
 var target = {}
 var handler = {}
 var {proxy, revoke} = Proxy.revocable(target, handler)
+
 proxy.a = 'b'
 console.log(proxy.a)
 //  'b'
+
 revoke()
 revoke()
 revoke()
