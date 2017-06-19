@@ -1,18 +1,32 @@
-var target = {}
-
-var handler = {
-    set (target, key, value) {
-        console.log('I try to set property', key)
-        return true
-    },
-    get (target, key) {
-        console.log('I got', key)
-        return target[key]
-    }
+function invariant (key, action) {
+  if (key[0] === '_') {
+    throw new Error(`Invalid attempt to ${action} private "${key}" property`)
+  }
 }
 
-var proxy = new Proxy(target, handler)
+var handler = {
+  get (target, key) {
+    invariant(key, 'get')
+    return target[key]
+  },
+  set (target, key, value) {
+    invariant(key, 'set')
+    return true
+  },
+  has (target, key) {
+    if (key[0] === '_') {
+      return false
+    }
+    return key in target
+  }
+}
 
-proxy.a = 1
-console.log(proxy.a)
-console.log(target.a)
+
+var target = { _prop: 'foo', pony: 'foo' }
+var proxy = new Proxy(target, handler)
+console.log('pony' in proxy)
+// <- true
+console.log('_prop' in proxy)
+// <- false
+console.log('_prop' in target)
+// <- true

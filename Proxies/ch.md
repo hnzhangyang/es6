@@ -2,6 +2,13 @@
 ## 目录
 - [Proxy](#Proxy)
 - [Proxy.revocable](#Proxy.revocable)
+- [handler](#handler)
+    - [has](#has)
+    - [deleteProperty](#deleteProperty)
+    - [defineProperty](#defineProperty)
+    - [enumerate](#enumerate)
+    - [ownkeys](#ownkeys)
+    - [apply](#apply)
 ## Proxy
 Proxy 译为代理，它可以代理对象属性被访问时的行为。
 ``` javaScript
@@ -89,3 +96,43 @@ revoke()
 console.log(proxy.a)
 //  TypeError: illegal operation attempted on a revoked proxy
 ```
+## handler
+除了 **set** 和 **get**，handler 还有很多有意思的方法。
+- has
+- deleteProperty
+- defineProperty
+- enumerate
+- ownkeys
+- apply
+
+### has
+**has** 用于 **in** 操作符，可以控制显示隐藏目标对象在 **in** 操作符时的属性。
+
+**return true** 表示存在这个属性，**return false** 表示不存在这个属性，不管属性是否真实存在。
+``` javaScript
+var handler = {
+    has: function(target, key){
+        if (key[0] === '_') {
+            return false
+        }
+        return key in target
+    }
+}
+
+var target = {
+    foo: 'foo',
+    _bar: 'bar'
+}
+
+var proxy = new Proxy(target,handler)
+
+console.log('foo' in proxy)
+// true
+console.log('_bar' in proxy)
+// false
+console.log('_bar' in target)
+// true
+```
+上面的代码中通过 handler 的 **has** 方法，控制了在 in 操作符的检测中，私有属性被隐藏。
+
+### deleteProperty
