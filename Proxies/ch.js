@@ -1,32 +1,19 @@
-function invariant (key, action) {
-  if (key[0] === '_') {
-    throw new Error(`Invalid attempt to ${action} private "${key}" property`)
-  }
-}
-
-var handler = {
-  get (target, key) {
-    invariant(key, 'get')
-    return target[key]
-  },
-  set (target, key, value) {
-    invariant(key, 'set')
-    return true
-  },
-  has (target, key) {
-    if (key[0] === '_') {
-      return false
+var twice = {
+    apply (target, ctx, args) {
+      console.log(target(...arguments))
+        return target.apply(window,...arguments) * 2
     }
-    return key in target
-  }
 }
+function sum (left, right) {
+    return left + right
+}
+var proxy = new Proxy(sum, twice)
 
-
-var target = { _prop: 'foo', pony: 'foo' }
-var proxy = new Proxy(target, handler)
-console.log('pony' in proxy)
-// <- true
-console.log('_prop' in proxy)
-// <- false
-console.log('_prop' in target)
-// <- true
+console.log(proxy(1, 2))
+//  6
+console.log(proxy(...[3, 4]))
+//  14
+console.log(proxy.call(null, 5, 6))
+//  22
+console.log(proxy.apply(null, [7, 8]))
+//  30

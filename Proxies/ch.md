@@ -136,3 +136,131 @@ console.log('_bar' in target)
 上面的代码中通过 handler 的 **has** 方法，控制了在 in 操作符的检测中，私有属性被隐藏。
 
 ### deleteProperty
+**deleteProperty** 用于 **delete** 操作符，控制特性属性是否能被删除。
+
+**return true** 表示删除，**return false** 表示阻止删除。
+``` javaScript
+var handler = {
+    deleteProperty: function(target, key){
+        if(key[0] === '_'){
+            return false
+        }
+        return true
+    }
+}
+
+var target = {
+    foo: 'foo',
+    _bar: '_bar'
+}
+
+var proxy = new Proxy(target, handler)
+
+delete proxy.foo
+console.log('foo' in target)
+// false
+
+delete proxy._bar
+console.log('_bar' in target)
+// 'deleteProperty' on proxy: trap returned falsish for property '_bar'
+``` 
+上面代码通过设置 **deleteProperty** 阻止了对象私有属性的删除。
+
+### defineProperty
+**defineProperty** 用于 **Object.defineProperty** 方法，控制设置对象属性是否成功。
+
+**return true** 表示成功，**return false** 表示失败。
+``` javaScript
+var handler = {
+    defineProperty: function(target, key, descriptor){
+        return false
+    }
+}
+
+var target = {}
+
+var proxy = new Proxy(target, handler)
+
+proxy.foo = 'foo'
+// 'defineProperty' on proxy: trap returned falsish for property 'foo'
+```
+### enumerate
+**enumerate** 用于 **for...in** 循环，可以通过事先返回一个 **iterator**，屏蔽掉某些属性。
+``` javaScript
+var handler = {
+    enumerate: function(target){
+        return Object.keys(target).filter(key => key[0] !== '_')[Symbol.iterator]()
+    }
+}
+
+var target = {
+    foo: 'foo',
+    _bar: '_bar'
+}
+
+var proxy = new Proxy(target, handler)
+
+for(var key in proxy){
+    console.log(key)
+}
+// foo
+```
+还记的 **[Symbol.iterator]()** 吗？ 它是数组的 **iterator** 方法，返回一个 **iterator** 对象。
+
+上述代码我们通过 **enumerate** 防止了私有属性被 **for...in** 循环遍历到。
+
+### ownkeys
+**ownkeys** 用于以下操作符
+- Object.getOwnPropertyNames()
+- Object.getOwnPorpertySymbols()
+- Object.keys()
+- Reflect.ownKeys()
+
+通过事先返回一个数组，防止某些属性或键，被上述方法访问到。
+``` javaScript
+var handler = {
+    ownKeys (target) {
+        return Reflect.ownKeys(target).filter(key => key[0] !== '_')
+    }
+}
+
+var target = {
+    _bar: 'foo',
+    _prop: 'bar',
+    [Symbol('secret')]: 'baz',
+    pony: 'ponyfoo'
+}
+var proxy = new Proxy(target, handler)
+for (let key of Object.keys(proxy)) {
+    console.log(key)
+    // 'pony'
+}
+```
+
+### apply
+**apply** 用于拦截方法的调用。**apply** 接受三个参数。
+- target 被调用的方法本身
+- ctx 作用域
+- args 方法被调用时的参数
+
+下面的代码通过 **apply** 拦截，给每个结果乘以2。
+```javaScript
+var twice = {
+    apply (target, ctx, args) {
+        return Reflect.apply(...arguments) * 2
+    }
+}
+function sum (left, right) {
+    return left + right
+}
+var proxy = new Proxy(sum, twice)
+
+console.log(proxy(1, 2))
+//  6
+console.log(proxy(...[3, 4]))
+//  14
+console.log(proxy.call(null, 5, 6))
+//  22
+console.log(proxy.apply(null, [7, 8]))
+//  30
+```
