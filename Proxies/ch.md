@@ -342,7 +342,7 @@ console.log(proxy.prototype === bar)
 // true
 ```
 ### isExtensible
-**handler.isExtensible** 用来追踪 ***Object.isExtensible*。
+**handler.isExtensible** 用来追踪 **Object.isExtensible**。
 ``` javaScript
 var handler = {
   isExtensible (target) {
