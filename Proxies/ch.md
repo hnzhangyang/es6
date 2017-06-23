@@ -9,6 +9,13 @@
     - [enumerate](#enumerate)
     - [ownkeys](#ownkeys)
     - [apply](#apply)
+- [进阶](#进阶)
+    - [construct](#construct)
+    - [getPrototypeOf](#getPrototypeOf)
+    - [setPrototypeOf](#setPrototypeOf)
+    - [isExtensible](#isExtensible)
+    - [preventExtensions](#preventExtensions)
+    - [getOwnPropertyDescriptor](#getOwnPropertyDescriptor)
 ## Proxy
 Proxy 译为代理，它可以代理对象属性被访问时的行为。
 ``` javaScript
@@ -263,4 +270,134 @@ console.log(proxy.call(null, 5, 6))
 //  22
 console.log(proxy.apply(null, [7, 8]))
 //  30
+```
+## 进阶
+这里还有一些关于 **Proxy** 的内容需要掌握。
+- construct
+- getPrototypeOf
+- setPrototypeOf
+- isExtensible
+- preventExtensions
+- getOwnPropertyDescriptor
+
+### construct
+**construct** 用来定义 **new proxy** 时的行为。
+``` javaScript
+var handler = {
+  construct (target, args) {
+    return new target(...args)
+  }
+}
+
+function target (a, b, c) {
+  this.a = a
+  this.b = b
+  this.c = c
+}
+var proxy = new Proxy(target, handler)
+console.log(new proxy(1,2,3))
+//  { a: 1, b: 2, c: 3 }
+```
+### getPrototypeOf
+定义 **handler.getPrototypeOf** 方法可以拦截下面的属性或方法。
+- **Object.prototype__proto__** 属性
+- **Object.prototype.isPrototypeOf()** 方法
+- **Object.getPrototypeOf()** 方法
+- **Reflect.getPrototypeOf()** 方法
+- **instanceof** 操作符
+
+例如你可以用 **handler.getPrototypeOf** 让对象假扮成是一个数组的实例。
+``` javaScript
+var handler = {
+    getPrototypeOf() {
+        return Array.prototype
+    }
+}
+
+var foo = {}
+
+var proxy = new Proxy(foo, handler)
+
+console.log(proxy instanceof Array)
+// true
+```
+
+### setPrototypeOf
+**setPrototypeOf** 用来追踪 **Object.setPrototypeOf**。
+``` javaScript
+var handler = {
+    setPrototypeOf(target, proto) {
+        Object.setPrototypeOf(target, proto)
+    }
+}
+
+var foo = function () { }
+var bar = {}
+
+var proxy = new Proxy(foo, handler)
+
+proxy.setPrototypeOf(proxy, bar)
+
+console.log(proxy.prototype === bar)
+// true
+```
+### isExtensible
+**handler.isExtensible** 用来追踪 ***Object.isExtensible*。
+``` javaScript
+var handler = {
+  isExtensible (target) {
+    if (Math.random() > 0.1) {
+      throw new Error('gotta love sporadic obscure errors!')
+    }
+    return Object.isExtensible(target)
+  }
+}
+var target = {}
+var proxy = new Proxy(target, handler)
+console.log(Object.isExtensible(proxy))
+//  true
+console.log(Object.isExtensible(proxy))
+//  true
+console.log(Object.isExtensible(proxy))
+//  true
+console.log(Object.isExtensible(proxy))
+//  Error: gotta love sporadic obscure errors!
+```
+
+### preventExtensions
+**hander.preventExtensions** 用来追踪 **Object.preventExtensions**。
+``` javaScript
+var mustExtend = new WeakSet()
+var handler = {
+  preventExtensions (target) {
+    if (!mustExtend.has(target)) {
+      Object.preventExtensions(target)
+    }
+    return !Object.isExtensible(target)
+  }
+}
+var target = {}
+var proxy = new Proxy(target, handler)
+mustExtend.add(target)
+Object.preventExtensions(proxy)
+//  TypeError: proxy preventExtensions handler returned false
+```
+### getOwnPropertyDescriptor
+**handler.getOwnPropertyDescriptor** 用来追踪 **Object.getOwnPropertyDescriptor**。
+``` javaScript
+var handler = {
+  getOwnPropertyDescriptor (target, key) {
+    invariant(key, 'get property descriptor for')
+    return Object.getOwnPropertyDescriptor(target, key)
+  }
+}
+function invariant (key, action) {
+  if (key[0] === '_') {
+    throw new Error(`Invalid attempt to ${action} private "${key}" property`)
+  }
+}
+var target = {}
+var proxy = new Proxy(target, handler)
+Object.getOwnPropertyDescriptor(proxy, '_foo')
+//  Error: Invalid attempt to get property descriptor for private "_foo" property
 ```
