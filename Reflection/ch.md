@@ -40,6 +40,6 @@ Reflect 是一个静态类型的对象，它的方法都是静态方法。Reflec
 - Reflect.getPrototypeOf(target)
 - Reflect.srtPrototypeOf(target, prototype)
 
-具体 proxy 使用说明可以[到此](#https://github.com/hnzhangyang/es6/blob/master/Proxies/ch.md)查看
+具体 proxy 使用说明可以[到此](https://github.com/hnzhangyang/es6/blob/master/Proxies/ch.md)查看
 
 以后将会将更多的内部方法移入 Reflect ，比如 Object.keys。
