@@ -1,3 +1,12 @@
 # Number
 ## 目录
 - [Binary-And-Octal-Literals](#Binary-And-Octal-Literals)
+- [Number.isNaN](#Number.isNaN)
+- [Number.isFinite](#Number.isFinite)
+- [Number.parseInt](#Number.parseInt)
+- [Number.parseFloat](#Number.parseFloat)
+- [Number.isInteger](#Number.isInteger)
+- [Number.EPSILON](#Number.EPSILON)
+- [Number.MAX_SAFE_INTEGER](#Number.MAX_SAFE_INTEGER)
+- [Number.MIN_SAFE_INTEGER](#Number.MIN_SAFE_INTEGER)
+- [Number.isSafeInteger](#Number.isSafeInteger)
