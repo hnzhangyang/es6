@@ -30,3 +30,46 @@ console.log(0o010)
 ```
 
 **0b** 代表二进制前缀，**0o** 代表八进制前缀，当然 **0B**、**0O** 也是可行的，不过推荐用小写字母。
+
+## Number.isNaN
+
+在 ES5 中有一个 global.isNaN 方法，与 Number.isNaN 方法很相似，它们都接受一个值与 null 比较，返回比较结果。
+
+不同的是，global.isNaN 方法是用的是 value == NaN Number.isNaN 使用的是  value === NaN 比较。换言之，使用 global.isNaN 方法时，若 value 值不是 Number 类型，会先将其转换为 Number 类型，再进行比较，而 Number.isNaN 方法，则不会转换。
+``` javaScript
+isNaN('ponyfoo')
+// 返回 true 因为 Number('ponyfoo') 为 NaN
+isNaN(new Date())
+// true
+```
+
+``` javaScript
+Number.isNaN(123)
+// false
+Number.isNaN(Infinity)
+// false
+Number.isNaN('ponyfoo')
+// false
+Number.isNaN(NaN)
+// true
+Number.isNaN('pony'/'foo')
+// true, 因为 'pony'/'foo' 为 NaN
+```
+结合 Number.isNaN ，以后我们想判断一个值是不是数字，可以这样写一个功能函数
+``` javaScript
+function isNumber (value) {
+  return typeof value === 'number' && !Number.isNaN(value)
+}
+```
+``` javaScript
+isNumber(1)
+//  true
+isNumber(Infinity)
+//  true
+isNumber(NaN)
+// false
+isNumber('ponyfoo')
+// false
+isNumber(new Date())
+// false
+```
