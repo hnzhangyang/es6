@@ -97,17 +97,17 @@ new Array(-1)
 Array.of
 ``` javaScript
 Array.of()
-//  []
+// []
 Array.of(undefined)
-//  [undefined]
+// [undefined]
 Array.of(1)
-//  [1]
+// [1]
 Array.of(3)
-//  [3]
+// [3]
 Array.of(1, 2)
-//  [1, 2]
+// [1, 2]
 Array.of(-1)
-//  [-1]
+// [-1]
 ```
 Array.of 可以简单的类似为。
 ``` javaScript
@@ -115,8 +115,105 @@ Array.of = function of () {
   return Array.prototype.slice.call(arguments)
 }
 Array.prototype.slice.call([1, 2, 3])
-//  [1, 2, 3]
+// [1, 2, 3]
 Array.of(1, 2, 3)
-//  [1, 2, 3]
+// [1, 2, 3]
 ```
 但需要注意的是 Array.of 的参数不需要用 [] 包起来。
+
+## Array.prototype.copyWithin
+Array.prototype.copyWithin 复制替换数组的项。
+``` javaScript
+Array.prototype.copyWithin(target, start, end)
+```
+其中 target 是必传参数,代表复制的起点。start 默认值是 0，end 默认值是 this.length。
+``` javaScript
+var items = [1, 2, 3, ,,,,,,,]
+// [1, 2, 3, undefined x 7]
+
+items.copyWithin(6, 1, 3)
+// [1, 2, 3, undefined × 3, 2, 3, undefined × 2]
+```
+
+## Array.prototype.fill
+Array.prototype.fill 用于填充数组。
+``` javaScript
+['a', 'b', 'c'].fill(0)
+// [0, 0, 0]
+new Array(3).fill(0)
+// [0, 0, 0]
+```
+或者你也可以指定填充位置。
+``` javaScript
+['a', 'b', 'c',,,].fill(0, 2)
+// ['a', 'b', 0, 0, 0]
+new Array(5).fill(0, 0, 3)
+// [0, 0, 0, undefined x 2]
+```
+填充的值可以是任意值。
+``` javaScript
+new Array(3).fill({})
+// [{}, {}, {}]
+```
+需要注意的是，Array.prototype.fill 不能使用回调函数。
+``` javaScript
+new Array(3).fill(function foo () {})
+// [function foo () {}, function foo () {}, function foo () {}]
+```
+
+## Array.prototype.find
+Array.prototype.find 用于返回第一个匹配的值。
+``` javaScript
+[1, 2, 3, 4, 5].find(item => item > 2)
+// 3
+[1, 2, 3, 4, 5].find((item, i) => i === 3)
+// 4
+[1, 2, 3, 4, 5].find(item => item === Infinity)
+// undefined
+```
+
+## Array.prototype.findIndex
+Array.prototype.findIndex 查找指定项的位置。
+``` javaScript
+[1, 2, 3, 4, 5].find(item => item > 2)
+// 2
+[1, 2, 3, 4, 5].find((item, i) => i === 3)
+// 3
+[1, 2, 3, 4, 5].find(item => item === Infinity)
+// -1
+```
+
+## Array.prototype.keys
+Array.prototype.keys 返回一个具有 **iterator** 接口的由数组各项 key 组成的数组，这意味着你可以使用任何支持 **iterator** 接口的方法。
+``` javaScript
+for (let key of [1, 2, 3].keys()) {
+  console.log(key)
+  // 0
+  // 1
+  // 2
+}
+
+[...new Array(3).keys()]
+// [0, 1, 2]
+Object.keys(new Array(3))
+// []
+```
+## Array.prototype.values
+Array.prototype.values 跟 Array.prototype.keys 很相似，不过它返回的 **iterator** 化的数组是由 values 组成，而不是 keys。
+``` javaScript
+[...[1, 2, 3].values()]
+// [1, 2, 3]
+```
+
+## Array.prototype.entries
+Array.prototype.entries 是上面两个方法的集合，它返回同时包含 keys 和 values 的 **iterator** 对象。
+``` javaScript
+[...['a', 'b', 'c'].entries()]
+// [[0, 'a'], [1, 'b'], [2, 'c']]
+```
+## array.prototype[Symbol.iterator]
+array.prototype[Symbol.iterator] 跟 Array.prototype.values 方法很像。
+``` javaScript
+[...['a', 'b', 'c'][Symbol.iterator]()]
+// ['a', 'b', 'c']
+```
