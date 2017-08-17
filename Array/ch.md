@@ -39,3 +39,22 @@ function cast ()
   return [...arguments]
 }
 ```
+庆幸 ES6 为 arguments 对象添加了 **interator接口**，我们可以使用 **扩展运算符** 来使其变成数组对象，同样的， ES6 还为 NodeList 布置了 **interator接口** ，所以我们也可以这样写。
+``` javaScript
+[...$('div')]
+TypeError: $(...)[Symbol.iterator] is not a function
+```
+但是需要注意的是，JQuery 对象，并不具有 **interator接口**，所以当我们用 **扩展运算符** 遍历 JQuery 对象时，会报错。
+``` javaScript
+[...$('div')]
+TypeError: $(...)[Symbol.iterator] is not a function
+```
+总结来说，在上面的方法中。
+- Array.prototype.slice.call() 方法将类数组对象，转化为数组对象
+- **扩展运算符** 将具有 **interator接口** 的任意对象，转化为数组对象
+
+而今天所说的 **Array.from** 方法，集合了上述两个方法的优点，所以在 JQuery 对象中，我们可以这样写。
+``` javaScript
+Array.from($('div'))
+// [<div>, <div>, <div>, ...]
+```
