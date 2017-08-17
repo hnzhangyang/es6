@@ -58,3 +58,22 @@ TypeError: $(...)[Symbol.iterator] is not a function
 Array.from($('div'))
 // [<div>, <div>, <div>, ...]
 ```
+需要注意的是 **Array.from** 方法并不支持局部遍历，也就是说如果你想遍历除第一个 div 之外的所有 div，你可以使用 Array.prototype.slice.call() 方法。
+``` javaScript
+[].slice.call(document.querySelectorAll('div'), 1)
+```
+**Array.from** 接受三个参数。
+- input：你想要遍历的对象
+- map：mapping 函数
+- context：mapping 函数执行时的上下文
+
+比如说下面的栗子。
+``` javaScript
+function typesOf () {
+  return Array.from(arguments, value => typeof value)
+}
+typesOf(null, [], NaN)
+// ['object', 'object', 'number']
+```
+
+## Array.of
