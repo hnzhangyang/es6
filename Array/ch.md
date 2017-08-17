@@ -53,16 +53,16 @@ TypeError: $(...)[Symbol.iterator] is not a function
 - Array.prototype.slice.call() 方法将类数组对象，转化为数组对象
 - **扩展运算符** 将具有 **interator接口** 的任意对象，转化为数组对象
 
-而今天所说的 **Array.from** 方法，集合了上述两个方法的优点，所以在 JQuery 对象中，我们可以这样写。
+而今天所说的 Array.from 方法，集合了上述两个方法的优点，所以在 JQuery 对象中，我们可以这样写。
 ``` javaScript
 Array.from($('div'))
 // [<div>, <div>, <div>, ...]
 ```
-需要注意的是 **Array.from** 方法并不支持局部遍历，也就是说如果你想遍历除第一个 div 之外的所有 div，你可以使用 Array.prototype.slice.call() 方法。
+需要注意的是 Array.from 方法并不支持局部遍历，也就是说如果你想遍历除第一个 div 之外的所有 div，你可以使用 Array.prototype.slice.call() 方法。
 ``` javaScript
 [].slice.call(document.querySelectorAll('div'), 1)
 ```
-**Array.from** 接受三个参数。
+Array.from 接受三个参数。
 - input：你想要遍历的对象
 - map：mapping 函数
 - context：mapping 函数执行时的上下文
@@ -77,3 +77,46 @@ typesOf(null, [], NaN)
 ```
 
 ## Array.of
+Array.of 可以看成是类似于 new Array 的创建数组的方法。
+
+new Array
+``` javaScript
+new Array()
+// []
+new Array(undefined)
+// [undefined]
+new Array(1)
+// [undefined x 1]
+new Array(3)
+// [undefined x 3]
+new Array(1, 2)
+// [1, 2]
+new Array(-1)
+// RangeError: Invalid array length
+```
+Array.of
+``` javaScript
+Array.of()
+//  []
+Array.of(undefined)
+//  [undefined]
+Array.of(1)
+//  [1]
+Array.of(3)
+//  [3]
+Array.of(1, 2)
+//  [1, 2]
+Array.of(-1)
+//  [-1]
+```
+Array.of 可以简单的类似为。
+``` javaScript
+Array.of = function of () {
+  return Array.prototype.slice.call(arguments)
+}
+Array.prototype.slice.call([1, 2, 3])
+//  [1, 2, 3]
+Array.of(1, 2, 3)
+//  [1, 2, 3]
+```
+但需要注意的是 Array.of 的参数不需要用 [] 包起来。
