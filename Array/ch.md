@@ -13,6 +13,7 @@
 - [Array.prototype.includes](#Array.prototype.includes)
 - [Array.observe](#Array.observe)
 - [Array.unobserve](#Array.unobserve)
+- [ES5数组扩展](#ES5数组扩展)
 ## Array.from
 Array.from 将一个类数组对象(arraylike)，或者一个 [interator对象](https://github.com/hnzhangyang/es6/blob/master/Iterators/ch.md) 转化成真正的数组。
 
@@ -217,3 +218,32 @@ array.prototype[Symbol.iterator] 跟 Array.prototype.values 方法很像。
 [...['a', 'b', 'c'][Symbol.iterator]()]
 // ['a', 'b', 'c']
 ```
+
+## ES5数组扩展
+这里列出 ES5 中扩展的数组方法，方便类比记忆。
+- Array.prototype.forEach
+- Array.prototype.map
+- Array.prototype.filter
+- Array.prototype.some
+- Array.prototype.every
+- Array.prototype.indexOf
+- Array.prototype.lastIndexOf
+- Array.prototype.reduce
+- Array.prototype.reduceRight
+
+更早之前
+- Array.prototype.concat
+- Array.prototype.join
+- Array.prototype.pop
+- Array.prototype.push
+- Array.prototype.reverse
+- Array.prototype.shift
+- Array.prototype.slice
+- Array.prototype.sort
+- Array.prototype.splice
+- Array.prototype.unshift
+
+因为数组继承对象的方法，所以下面的方法在数组中也可以使用。
+- Object.prototype.toString
+- Object.prototype.toLocaleString
+- Object.prototype.valueOf
