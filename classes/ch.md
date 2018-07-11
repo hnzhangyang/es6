@@ -333,6 +333,27 @@ console.log(Bar.prototype.__proto__ === Foo.prototype)
 你可能注意到了在 Bar 的 构造函数中有一个 super() 字样。这个 super() 不可缺少，因为子类是没有
 this 对象的，需要借助父类的 this 对象。在子类的构造函数中调用 super，其实就是调用父类 constructor 方法。
 
+为什么在声明子类的时候需要调用父类的 constructor 方法？还记得在 ES5 中我们怎么使用继承的吗？
+
+```
+function Foo (){}
+Foo.prototype.showFoo = function(){
+    console.log('Foo')
+}
+
+function Bar (){}
+Bar.prototype = new Foo() // 这里就类似于 super()
+Bar.prototype.showBar = function(){
+    console.log('Bar')
+}
+
+var instance = new Bar() // 这里就类似于 super()
+instance.showFoo()
+// Foo
+instance.showBar()
+// Bar
+```
+
 super 对象还可以引用父类的其他公共方法。
 ```
 class Foo {
