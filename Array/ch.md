@@ -80,6 +80,8 @@ typesOf(null, [], NaN)
 ## Array.of
 Array.of 可以看成是类似于 new Array 的创建数组的方法。
 
+它跟上面说的 Array.from 有所不同的是，Array.of 是将一系列值包含在一个空数组里面，而 Array.from 是将伪数组转化为真正的数组。
+
 new Array
 ``` javaScript
 new Array()
